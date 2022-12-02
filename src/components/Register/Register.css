@@ -1,0 +1,92 @@
+.register {
+    width: 396px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 70px 461px 0 461px;
+    flex-direction: column;
+}
+
+.register__title {
+    color: #000;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    vertical-align: top;
+    margin: 0;
+}
+
+.register__form {
+    width: 100%;
+}
+
+.register__fieldset {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.register__label {
+    color: #A0A0A0;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.register__input {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: #000;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(232, 232, 232, 1);
+    width: 100%;
+}
+
+.register__error {
+    display: block;
+    height: 12px;
+    margin-top: 6px;
+}
+
+.register__button-save {
+    margin-top: 134px;
+    margin-bottom: 16px;
+    background-color: #2BE080;
+    border-radius: 3px;
+    border: none;
+    width: 100%;
+    height: 45px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.register__link {
+    color: #A0A0A0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    align-self: center;
+    text-decoration: none;
+}
+
+.register__link_green {
+    color: #2BE080;
+}
+
+.register__logo {
+    margin-bottom: 40px;
+}
+
+.register__button-save_login {
+    margin-top: 221px;
+}

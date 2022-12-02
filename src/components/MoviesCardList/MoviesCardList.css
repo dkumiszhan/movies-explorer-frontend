@@ -1,0 +1,27 @@
+.cards__list {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 20px;
+    row-gap: 38px;
+}
+
+.cards {
+    margin: 70px 70px 0 70px;
+}
+
+@media (max-width: 1024px) {
+    .cards__list {
+        column-gap: 30px;
+        row-gap: 30px;
+    }
+}
+
+@media (max-width: 760px) {
+    .cards__list {
+        row-gap: 34px;
+    }
+}

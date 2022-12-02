@@ -1,0 +1,118 @@
+.header {
+    margin: 0 70px;
+    height: 74px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  
+}
+
+.header__logo {
+    width: 38px;
+    height: 38px;
+}
+
+.header__login-link {
+    background-color: #2BE080;
+    text-decoration: none;
+    color: #000;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    width: 76px;
+    height: 32px;
+    border-width: 8px;
+    vertical-align: middle;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__register-link {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    color: #000;
+    text-decoration: none;
+}
+
+.header__container {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.header__movies-link {
+    text-decoration: none;
+    color: #000;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.header__savedmovies-link {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #000;
+    text-decoration: none;
+}
+
+.header__account {
+    margin: 0;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 12px;
+    text-decoration: none;
+    color: #000;
+    width: 100px;
+    height: 32px;
+    filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.08));
+    border-radius: 40px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+}
+
+.header__account-icon {
+    width: 10.38px;
+    height: 10.67px;
+}
+
+.header__account-box {
+    border-radius: 50px;
+    background-color: #F9F9F9;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .header {
+        margin: 0 30px;
+    }
+}
+
+@media (max-width: 760px) {
+    .header__login-link {
+        font-size: 10px;
+        width: 54px;
+        height: 26px;
+    }
+
+    .header__register-link {
+        font-size: 10px;
+    }
+
+    .header {
+        margin: 0 14px;
+    }
+
+    .header__container {
+        gap: 14px;
+    }
+}

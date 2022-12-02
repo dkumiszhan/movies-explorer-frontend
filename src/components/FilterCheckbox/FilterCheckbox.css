@@ -1,0 +1,14 @@
+.filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter__input {
+    background-image: url("../../images/smalltumboff.svg");
+}
+
+.filter__input_checked {
+    background-image: url("../../images/smalltumb_checked.svg");
+}
