@@ -10,7 +10,7 @@ function FilterCheckbox() {
     return(
         <div className="filter">
             <input
-            className="filter__input"
+            className="filter__input checkbox"
             type="checkbox"
             value={checked}
             onChange={handleChange}

@@ -15,6 +15,7 @@ import NotFound from '../NotFound/NotFound';
 function App() {
   return (
     <>
+    <SearchForm />
       <NotFound />
     </>
   );
