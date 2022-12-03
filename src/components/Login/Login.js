@@ -62,7 +62,7 @@ function Register(props) {
                 />
                 </fieldset> 
             </form>
-            <Link to="/sign-in" className="register__link">
+            <Link to="/sign-up" className="register__link">
             Ещё не зарегистрированы? <span className="register__link register__link_green">Регистрация</span>
             </Link>
         </div>

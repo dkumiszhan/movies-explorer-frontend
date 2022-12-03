@@ -11,9 +11,9 @@ function Header(props) {
             <div className="header__container">
                 {props.isLoggedIn ? (
                     <>
-                        <Link to={props.movies} className="header__movies-link">Фильмы</Link>
-                        <Link to={props.savedMovies} className="header__savedmovies-link">Сохранённые фильмы</Link>
-                        <Link to={props.account} className="header__account">Аккаунт
+                        <Link to="/movies" className="header__movies-link">Фильмы</Link>
+                        <Link to="/saved-movies" className="header__savedmovies-link">Сохранённые фильмы</Link>
+                        <Link to="/profile" className="header__account">Аккаунт
                         <div className="header__account-box">
                             <img className="header__account-icon" src={accountIcon} alt="иконка аккаунта" />
                         </div>
@@ -21,8 +21,8 @@ function Header(props) {
                     </>
                 ) : (
                     <>
-                        <Link to={props.register} className="header__register-link">Регистрация</Link>
-                        <Link to={props.login} className="header__login-link">Войти</Link> 
+                        <Link to="sign-up" className="header__register-link">Регистрация</Link>
+                        <Link to="sign-in" className="header__login-link">Войти</Link> 
                     </>
                 )}
             </div>
