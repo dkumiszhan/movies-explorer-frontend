@@ -6,6 +6,7 @@ import Main from "../Main/Main";
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
+import Navigation from "../Navigation/Navigation";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/movies" element={<Movies />} />
         <Route path="/saved-movies" element={<SavedMovies />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/navigation" element={<Navigation />} />
       </Routes>
     </>
   );
