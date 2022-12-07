@@ -91,9 +91,25 @@
     justify-content: center;
 }
 
+.header__menu-button {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .header {
         margin: 0 30px;
+    }
+
+    .header__container {
+        display: none;
+        background-image: url("../../images/icon__drop-down.svg");
+    }
+
+    .header__menu-button {
+        display: block;
+        border: none;
+        padding: 0;
+        background-color: #fff;
     }
 }
 

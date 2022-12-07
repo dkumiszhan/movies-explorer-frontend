@@ -3,11 +3,15 @@ import logo from "../../images/logo.svg";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import accountIcon from "../../images/account-icon.svg";
+import menu from "../../images/icon__drop-down.svg";
 
 function Header(props) {
     return(
         <header className="header">
             <img className="header__logo" src={logo} alt="логотип" />
+            <button className="header__menu-button" type="button">
+                <img className="header__menu" src={menu} alt="кнопка меню" />  
+            </button>
             <div className="header__container">
                 {props.isLoggedIn ? (
                     <>
