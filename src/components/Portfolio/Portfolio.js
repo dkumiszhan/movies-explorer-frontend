@@ -9,22 +9,22 @@ function Portfolio(props) {
             <h2 className="portfolio__title">Портфолио</h2>
             <ul className="portfolio__links">
                 <li className="portfolio__link">
-                    <Link to={props.staticSite} className="portfolio__link-element">
+                    <a href="https://github.com/dkumiszhan/how-to-learn" target="_blank" className="portfolio__link-element">
                     Статичный сайт
                     <img src={arrowLink} className="portfolio__arrow-img" alt="ссылка"/>
-                    </Link>
+                    </a>
                 </li>
                 <li className="portfolio__link">
-                    <Link to={props.adaptiveSite} className="portfolio__link-element">
+                    <a href="https://github.com/dkumiszhan/russian-travel" target="_blank" className="portfolio__link-element">
                     Адаптивный сайт
                     <img src={arrowLink} className="portfolio__arrow-img" alt="ссылка"/>
-                    </Link>
+                    </a>
                 </li>
                 <li className="portfolio__link">
-                    <Link to={props.onePageSite} className="portfolio__link-element">
+                    <a href="https://github.com/dkumiszhan/react-mesto-api-full" target="_blank" className="portfolio__link-element">
                     Одностраничное приложение
                     <img src={arrowLink} className="portfolio__arrow-img" alt="ссылка"/>
-                    </Link>
+                    </a>
                 </li>
             </ul>
         </section>

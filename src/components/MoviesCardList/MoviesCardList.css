@@ -24,4 +24,10 @@
     .cards__list {
         row-gap: 34px;
     }
+
+    .cards {
+        min-width: 300px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 }

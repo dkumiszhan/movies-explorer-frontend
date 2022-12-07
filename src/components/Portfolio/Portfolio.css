@@ -22,6 +22,14 @@
     color: #000;
     text-decoration: none;
     margin-bottom: 19px;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.portfolio__link-element:hover {
+  opacity: 0.6;
+  transition: opacity 0.8s linear;
+  cursor: pointer;
 }
 
 .portfolio__links {

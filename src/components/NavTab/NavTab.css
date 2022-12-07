@@ -26,6 +26,14 @@
     line-height: 16px;
     color: #000;
     text-decoration: none;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.navtab__link:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 @media (max-width: 760px) {

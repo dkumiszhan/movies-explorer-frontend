@@ -26,6 +26,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.header__login-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .header__register-link {
@@ -34,6 +42,14 @@
     line-height: 16px;
     color: #000;
     text-decoration: none;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.header__register-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .header__container {
@@ -48,6 +64,14 @@
     font-size: 14px;
     font-weight: 500;
     line-height: 18px;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.header__movies-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .header__savedmovies-link {
@@ -56,6 +80,14 @@
     line-height: 18px;
     color: #000;
     text-decoration: none;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.header__savedmovies-link:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .header__account {
@@ -74,6 +106,14 @@
     align-items: center;
     justify-content: center;
     gap: 7px;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.header__account:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .header__account-icon {

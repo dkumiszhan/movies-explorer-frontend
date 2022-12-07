@@ -64,7 +64,15 @@
     line-height: 16.94px;
     color: #000;
     text-decoration: none;
+    opacity: 1;
+    transition: opacity 0.8s linear;
 }
+
+.student__github:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
+  }
 
 @media (max-width: 1024px) {
     .student {

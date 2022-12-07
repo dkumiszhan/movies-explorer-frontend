@@ -1,11 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./AboutMe.css";
 import studentPic from "../../images/avatar.jpeg";
 
 function AboutMe(props) {
     return(
-        <section className="student">
+        <section className="student" id="about-student">
             <h2 className="student__title">Студент</h2>
             <div className="student__content">
                 <div className="student__info">
@@ -16,7 +15,7 @@ function AboutMe(props) {
                      "Электротехника с концентрацией в Нанотехнологиях" в Бостонском Университетею
                      Также обучилась на магистратуре по специальности "Физика". На данный момент
                      прохожу онлайн курс по "Веб разработки" на Яндекс Практикум.</p>
-                    <Link to={props.github} className="student__github">Github</Link>
+                    <a href="https://github.com/dkumiszhan" target="_blank" className="student__github">Github</a>
                 </div>
                 <img className="student__pic" src={studentPic} alt="фото студента" />
             </div>
