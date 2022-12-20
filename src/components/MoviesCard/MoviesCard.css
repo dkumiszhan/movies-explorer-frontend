@@ -1,8 +1,9 @@
-.card__item {
+.card {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 270px;
+    cursor: pointer;
 }
 
 .card__image {
@@ -20,12 +21,30 @@
     margin-bottom: 36px;
 }
 
-.card__save-button {
-    background-image: url("../../images/unsave.svg");
+.card__button {
     width: 24px;
     height: 24px;
     border: none;
     background-color: #fff;
+    margin-top: 10px;
+}
+
+.card__button-save {
+    background-image: url("../../images/unsave.svg");
+    cursor: pointer;
+}
+
+.card__button-save_saved {
+    background-image: url("../../images/save.svg");
+}
+
+.card__button-delete {
+    background-image: none;
+    cursor: pointer;
+}
+
+.card:hover .card__button-delete {
+    background-image: url("../../images/delete.svg");
 }
 
 .card__flex-container {
@@ -44,7 +63,7 @@
 }
 
 @media (max-width: 1024px) {
-    .card__item {
+    .card {
         width: 339px;
     }
 
@@ -54,7 +73,7 @@
 }
 
 @media (max-width: 760px) {
-    .card__item {
+    .card {
         width: 300px;
     }
 

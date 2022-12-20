@@ -22,7 +22,7 @@
     margin-bottom: 16px;
 }
 
-.profile__text_bold {
+.profile__text_size_bold {
     font-weight: 500;
 }
 
@@ -44,7 +44,7 @@
     margin: 0;
 }
 
-.profile__footer-text_redbold {
+.profile__footer-text_size_redbold {
     color: #EE3465;
     font-weight: 500;
     text-decoration: none;

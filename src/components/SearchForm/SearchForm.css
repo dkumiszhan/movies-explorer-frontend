@@ -14,7 +14,7 @@
 }
 
 .searchform__input {
-    width: 100%;
+    max-width: 100%;
     border: none;
     background-color: #F9F9F9;
     color: #A0A0A0;
@@ -34,6 +34,14 @@
     justify-content: center;
     margin-right: 6px;
     padding: 0;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.searchform__submit:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
 }
 
 .searchform__find-image {

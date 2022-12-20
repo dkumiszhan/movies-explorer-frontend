@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../Register/Register.css";
+import "./Login.css";
 import logo from "../../images/logo.svg";
 
 function Register(props) {
@@ -20,8 +21,12 @@ function Register(props) {
 
     return(
         <>
+        <header className="register">
+            <Link className="register__logo" to="/">
+                <img className="register__logo" src={logo} alt="логотип" />
+            </Link>
+        </header>
         <div className="register">
-            <img className="register__logo" src={logo} alt="логотип" />
             <h2 className="register__title">Рады видеть!</h2>
             <form className="register__form" name="registerForm">
                 <fieldset className="register__fieldset">

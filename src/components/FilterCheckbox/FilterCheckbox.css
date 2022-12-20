@@ -6,25 +6,13 @@
 }
 
 .filter__input {
-    /* clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px; */
     appearance: none;
     background-image: url("../../images/smalltumboff.svg");
-    width: 42px;
-    height: 22px;
-    object-fit: cover;
-    align-items: center;
-}
-
-.filter__input::before {
-    background-image: url("../../images/smalltumboff.svg");
+    background-size: cover;
+    background-repeat: no-repeat;
     width: 36px;
     height: 20px;
+    cursor: pointer;
 }
 
 .filter__input_checked {

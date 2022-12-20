@@ -7,6 +7,7 @@
     justify-content: center;
     margin: 0 auto;
     margin-top: 20px;
+    border-radius: 10px;
 }
 
 .promo__title {
@@ -15,7 +16,7 @@
     line-height: 58px;
     max-width: 61%;
     text-align: center;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     margin-top: 160px;
     margin-bottom: 151px;
 }

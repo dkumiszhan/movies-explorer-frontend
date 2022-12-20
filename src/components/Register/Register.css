@@ -95,14 +95,28 @@
 @media (max-width: 760px) {
     .register__button-save {
         font-size: 12px;
-        line-height: 14.52px;    
+        line-height: 14.52px;
+        margin-top: 222px;    
+    }
+
+    .register__button-save_login {
+        margin-top: 309px;
     }
 
     .register__logo {
         align-self: center;
+        margin-bottom: 50px;
     }
 
     .register {
         max-width: 260px;
+    }
+
+    .register__title {
+        align-self: center;
+    }
+
+    .register__fieldset {
+        margin-top: 80px;
     }
 }

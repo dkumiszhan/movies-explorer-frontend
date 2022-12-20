@@ -20,8 +20,10 @@ function Register(props) {
 
     return(
         <>
+        <header className="register">
+            <Link className="register__logo" to="/"><img className="register__logo" src={logo} alt="логотип" /></Link>
+        </header>
         <div className="register">
-            <img className="register__logo" src={logo} alt="логотип" />
             <h2 className="register__title">Добро пожаловать!</h2>
             <form className="register__form" name="registerForm">
                 <fieldset className="register__fieldset">

@@ -11,7 +11,7 @@
     font-weight: 400;
     font-size: 22px;
     line-height: 26.63px;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     color: #000;
     margin: 0 auto;
     border-bottom: 1px solid #000;
@@ -24,7 +24,7 @@
     font-weight: 400;
     font-size: 50px;
     line-height: 58px;
-    letter-spacing: -4px;
+    letter-spacing: -0.04em;
     text-align: center;
     margin: 0 auto;
 }
@@ -34,7 +34,7 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     text-align: center;
     margin: 26px auto 100px;
     max-width: 460px;
@@ -55,7 +55,7 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 16.94px;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     list-style: none;
     border-radius: 10px;
     display: flex;

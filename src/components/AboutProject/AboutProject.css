@@ -7,7 +7,7 @@
     font-weight: 400;
     font-size: 22px;
     line-height: 26.63px;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     color: #000;
     margin: 0;
     border-bottom: 1px solid #000;
@@ -26,12 +26,12 @@
     font-weight: 400;
     font-size: 20px;
     line-height: 24.2px;
-    letter-spacing: -4%;
+    letter-spacing: -0.04em;
     color: #000;
     margin: 0;
 }
 
-.project__text_small {
+.project__text_size_small {
     font-size: 14px;
     line-height: 20px;
     letter-spacing: normal;
@@ -120,7 +120,7 @@
         line-height: 21.78px;
     }
 
-    .project__text_small {
+    .project__text_size_small {
         font-size: 11px;
         line-height: 16px;
     }
