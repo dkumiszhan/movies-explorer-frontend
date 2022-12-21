@@ -10,7 +10,7 @@ function MoviesCard(props) {
       <div className="card__flex-container">
         <p className="card__name">{props.name}</p>
         <button
-          className={`card__button ${props.buttonType} ${
+          className={`card__button card__button-save ${props.buttonType} ${
             props.isLiked ? "card__button-save_saved" : ""
           }`}
           onClick={() => props.onClickHandler(props.id)}

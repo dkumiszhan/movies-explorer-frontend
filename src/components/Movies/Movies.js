@@ -28,7 +28,7 @@ function Movies(props) {
       <main className="main">
         <SearchForm />
         <MoviesCardList
-          buttonType="card__button-save"
+          buttonType=""
           cards={props.movies}
           likeHandler={props.likeHandler}
           unlikeHandler={props.unlikeHandler}

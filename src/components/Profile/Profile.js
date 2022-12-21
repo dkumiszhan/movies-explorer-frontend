@@ -19,7 +19,7 @@ function Profile() {
                         <p className="profile__text">pochta@yandex.ru</p>
                     </div>
                 </div>
-                <p className="profile__footer-text">Редактировать</p>
+                <button className="profile__button profile__footer-text">Редактировать</button>
                 <Link to="/" className="profile__footer-text profile__footer-text_size_redbold">Выйти из аккаунта</Link>
             </section>
         </>

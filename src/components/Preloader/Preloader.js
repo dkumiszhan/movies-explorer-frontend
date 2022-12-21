@@ -6,7 +6,7 @@ const Preloader = () => {
         <div className="preloader">
             <div className="preloader__container">
                 <span className="preloader__round">
-                    <p className="preloader__text">Ещё</p>
+                    <span className="preloader__text">Ещё</span>
                 </span>
             </div>
         </div>

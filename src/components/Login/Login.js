@@ -23,7 +23,7 @@ function Register(props) {
         <>
         <header className="register">
             <Link className="register__logo" to="/">
-                <img className="register__logo" src={logo} alt="логотип" />
+                <img className="register__image" src={logo} alt="логотип" />
             </Link>
         </header>
         <div className="register">
@@ -68,7 +68,7 @@ function Register(props) {
                 </fieldset> 
             </form>
             <Link to="/sign-up" className="register__link">
-            Ещё не зарегистрированы? <span className="register__link register__link_green">Регистрация</span>
+            Ещё не зарегистрированы? <span className="register__text register__text_color_green">Регистрация</span>
             </Link>
         </div>
         </>

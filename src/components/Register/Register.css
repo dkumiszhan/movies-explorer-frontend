@@ -72,15 +72,22 @@
 }
 
 .register__link {
+    align-self: center;
+    text-decoration: none;
     color: #A0A0A0;
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-    align-self: center;
-    text-decoration: none;
 }
 
-.register__link_green {
+.register__text {
+    color: #A0A0A0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.register__text_color_green {
     color: #2BE080;
 }
 
@@ -118,5 +125,11 @@
 
     .register__fieldset {
         margin-top: 80px;
+    }
+
+    .register__text {
+        font-size: 12px;
+        line-height: 14.52px;
+        max-width: 100%;
     }
 }

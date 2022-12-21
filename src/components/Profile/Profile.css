@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
+    width: 100%;
 }
 
 .profile__greeting {
@@ -20,6 +20,20 @@
     line-height: 13.31px;
     margin-top: 0;
     margin-bottom: 16px;
+}
+
+.profile__button {
+    border: none;
+    background-color: #fff;
+    padding: 0;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.profile__button:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
 }
 
 .profile__text_size_bold {

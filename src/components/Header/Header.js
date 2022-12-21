@@ -9,7 +9,7 @@ function Header(props) {
    return (
     <header className="header">
       <Link className="header__logo" to="/">
-        <img className="header__logo" src={logo} alt="логотип" />
+        <img className="header__image" src={logo} alt="логотип" />
       </Link>
       <div className="header__container">
         {props.isLoggedIn ? (
