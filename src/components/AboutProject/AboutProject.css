@@ -1,0 +1,142 @@
+.project {
+    width: 89.0625%;
+    margin: 110px auto 110px;
+}
+
+.project__title {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 26.63px;
+    letter-spacing: -0.04em;
+    color: #000;
+    margin: 0;
+    border-bottom: 1px solid #000;
+    padding-bottom: 23px;
+    margin-bottom: 70px;
+}
+
+.project__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    margin-bottom: 110px;
+}
+
+.project__text {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24.2px;
+    letter-spacing: -0.04em;
+    color: #000;
+    margin: 0;
+}
+
+.project__text_size_small {
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: normal;
+}
+
+.project__grid-progressbar {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    row-gap: 14px;
+}
+
+.project__text-progress-complete {
+    background-color: #2BE080;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #000;
+    text-align: center;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    margin: 0;
+}
+
+.project__text-progress-incomplete {
+    background-color: #F2F2F2;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #000;
+    text-align: center;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    margin: 0;
+}
+
+.project__text-grey {
+    color: #A0A0A0;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: center;
+    margin: 0;
+}
+
+.project__table {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+@media (max-width: 1024px) {
+    .project {
+        margin: 90px auto 90px;
+    }
+
+    .project__grid {
+        margin-bottom: 93px;
+    }
+}
+
+@media (max-width: 760px) {
+    .project {
+        margin: 70px auto 70px;
+    }
+
+    .project__title {
+        font-size: 18px;
+        line-height: 21.78px;
+        padding-bottom: 28px;
+        margin-bottom: 60px;
+    }
+
+    .project__grid {
+        margin-bottom: 60px;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: none;
+        row-gap: 56px;
+    }
+
+    .project__table {
+        gap: 16px;
+    }
+
+    .project__text {
+        font-size: 18px;
+        line-height: 21.78px;
+    }
+
+    .project__text_size_small {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .project__text-progress-complete {
+        font-size: 11px;
+        line-height: 13.31px;
+    }
+
+    .project__text-progress-incomplete {
+        font-size: 11px;
+        line-height: 12.74px;;
+    }
+
+    .project__text-grey {
+        font-size: 11px;
+        line-height: 12.74px;
+    }
+}

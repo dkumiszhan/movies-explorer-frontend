@@ -1,0 +1,139 @@
+.student {
+    width: 89.0625%;
+    margin: 110px auto 101px;
+}
+
+.student__title {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 26.63px;
+    letter-spacing: -0.04em;
+    color: #000;
+    margin: 0;
+    border-bottom: 1px solid #000;
+    padding-bottom: 23px;
+    margin-bottom: 66px;
+}
+
+.student__content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.student__info {
+    max-width: 50%;
+}
+
+.student__pic {
+    width: 270px;
+    height: 327px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.student__name {
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 58px;
+    letter-spacing: -0.04em;
+    color: #000;
+    margin: 0;
+}
+
+.student__major {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    color: #000;
+    margin-top: 18px;
+    margin-bottom: 26px;
+}
+
+.student__story {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 22px;
+    color: #000;
+    margin-top: 0;
+    margin-bottom: 99px;
+}
+
+.student__github {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16.94px;
+    color: #000;
+    text-decoration: none;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+}
+
+.student__github:hover {
+    opacity: 0.6;
+    transition: opacity 0.8s linear;
+    cursor: pointer;
+  }
+
+@media (max-width: 1024px) {
+    .student {
+        margin: 90px auto 90px;
+    }
+
+    .student__name {
+        font-size: 40px;
+        line-height: 40px;
+    }
+
+    .student__major {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .student__story {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .student__pic {
+        width: 255px;
+        height: 307px;
+    }
+}
+
+@media (max-width: 760px) {
+    .student {
+        margin: 70px auto 70px;
+    }
+
+    .student__pic {
+        width: 91.25%;
+        height: 352px;
+    }
+
+    .student__content {
+        flex-direction: column-reverse;
+        row-gap: 40px;
+    }
+
+    .student__info {
+        max-width: 91.25%;
+    }
+
+    .student__name {
+        font-size: 30px;
+        line-height: 36.31px;
+    }
+
+    .student__major {
+        font-size: 11px;
+        line-height: 16px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .student__story {
+        font-size: 11px;
+        line-height: 16px;
+        margin-bottom: 40px;
+    }
+}
