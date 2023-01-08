@@ -14,7 +14,7 @@
 }
 
 .searchform__input {
-    max-width: 100%;
+    width: 100%;
     border: none;
     background-color: #F9F9F9;
     color: #A0A0A0;

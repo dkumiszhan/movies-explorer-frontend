@@ -54,13 +54,15 @@
 .register__error {
     display: block;
     height: 12px;
+    font-size: 10px;
+    line-height: 12px;
     margin-top: 6px;
+    color: #EE3465;
 }
 
 .register__button-save {
     margin-top: 134px;
     margin-bottom: 16px;
-    background-color: #2BE080;
     border-radius: 3px;
     border: none;
     width: 100%;
@@ -69,6 +71,16 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
+}
+
+.register__button-save_active {
+    background-color: #2BE080;
+    cursor: pointer;
+}
+
+.register__button-save_inactive {
+    background-color: #EBEBE4;
+
 }
 
 .register__link {

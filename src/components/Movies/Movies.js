@@ -26,12 +26,12 @@ function Movies(props) {
       <Header isLoggedIn={true} handleMenuClick={handleMenuClick} />
       {isNavOpen && <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />}
       <main className="main">
-        <SearchForm />
+        <SearchForm onSearchSubmit={props.onSearchSubmit} checked={props.checked} handleFilterChange={props.handleFilterChange} />
         <MoviesCardList
           buttonType=""
           cards={props.movies}
-          likeHandler={props.likeHandler}
-          unlikeHandler={props.unlikeHandler}
+          movieIdMapping={props.movieIdMapping}
+          likeUnlikeHandler={props.likeUnlikeHandler}
         />
         <Preloader />
       </main>

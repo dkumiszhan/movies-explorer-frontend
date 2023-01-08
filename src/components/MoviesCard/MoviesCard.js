@@ -16,7 +16,7 @@ function MoviesCard(props) {
           onClick={() => props.onClickHandler(props.id)}
         ></button>
       </div>
-      <p className="card__duration">1 h 30 min</p>
+      <p className="card__duration">{props.duration}</p>
     </li>
   );
 }

@@ -1,19 +1,15 @@
 import React from "react";
 import "./FilterCheckbox.css";
 
-function FilterCheckbox() {
-    const [checked, setChecked] = React.useState(false);
-    const handleChange = () => {
-        setChecked(!checked);
-    };
+function FilterCheckbox(props) {
 
     return(
         <div className="filter">
             <input
-            className={`filter__input ${checked ? "filter__input_checked" : ""}`}
+            className={`filter__input ${props.checked ? "filter__input_checked" : ""}`}
             type="checkbox"
-            value={checked}
-            onChange={handleChange}
+            value={props.checked}
+            onChange={props.handleFilterChange}
             />
             <p className="filter__text">Короткометражки</p>
         </div>
