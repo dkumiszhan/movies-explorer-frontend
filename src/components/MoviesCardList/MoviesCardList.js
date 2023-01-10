@@ -4,7 +4,7 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList(props) {
     // console.log(props, "movies card list this");
-    console.log('moviecardlist props has ' + JSON.stringify(props.movieIdMapping));
+    console.log('moviecardlist props has ' + JSON.stringify(props.cards));
     return(
         <section className="cards">
             <ul className="cards__list">
@@ -17,7 +17,8 @@ function MoviesCardList(props) {
                         isLiked={!!props.movieIdMapping[item.id]}
                         buttonType={props.buttonType}
                         id={item.id}
-                        duration={item.duration}
+                        url={item.trailerLink}
+                        duration={`${Math.floor(item.duration/60)}h ${item.duration%60}м`}
                         onClickHandler={props.likeUnlikeHandler}
                         />
                     );

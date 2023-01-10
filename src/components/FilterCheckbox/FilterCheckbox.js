@@ -9,7 +9,7 @@ function FilterCheckbox(props) {
             className={`filter__input ${props.checked ? "filter__input_checked" : ""}`}
             type="checkbox"
             value={props.checked}
-            onChange={props.handleFilterChange}
+            onChange={props.handleCheckboxChange}
             />
             <p className="filter__text">Короткометражки</p>
         </div>

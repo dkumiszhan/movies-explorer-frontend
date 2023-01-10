@@ -8,6 +8,7 @@ import Navigation from "../Navigation/Navigation";
 
 function SavedMovies(props) {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [savedMoviesResult, setSavedMoviesResult] = useState(props.savedMovies);
 
   console.log("savedMovies props is " + JSON.stringify(props));
 
@@ -23,6 +24,13 @@ function SavedMovies(props) {
     console.log(`isNavOpen is ${isNavOpen}`);
   };
 
+  const searchSubmitHandler = (keyword, isChecked) => {
+    return props.onSearchSubmit(keyword, isChecked, true).then((newMovies) => {
+        setSavedMoviesResult(newMovies);
+    });
+  }
+
+
   return (
     <>
       {/* <Movies movies={filteredMovies} buttonType="card__button-delete" unlikeHandler={props.unlikeHandler} /> */}
@@ -31,9 +39,9 @@ function SavedMovies(props) {
         <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />
       )}
       <main className="main">
-        <SearchForm />
+        <SearchForm onSearchSubmit={searchSubmitHandler} checked={props.checked} />
         <MoviesCardList
-          cards={props.savedMovies}
+          cards={savedMoviesResult}
           buttonType="card__button-delete"
           movieIdMapping={props.movieIdMapping}
           likeUnlikeHandler={props.unlikeHandler}

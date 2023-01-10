@@ -2,31 +2,32 @@ import React, { useState } from "react";
 import "./SearchForm.css";
 import searchImg from "../../images/search.svg";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
-import moviesApi from "../../utils/MoviesApi";
+import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function SearchForm(props) {
-  const [movie, setMovie] = useState({ moviename: "", });
+  let queryInitial = '';
+  let isCheckedInitial = false;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMovie({ 
-        ...movie,
-        [name]: value,
-    });
+  if (props.useLocalStorage) {
+    const localStorageState = LocalStorageUtil.loadStateFromLocalStorage();
+    queryInitial = localStorageState.query;
+    isCheckedInitial = localStorageState.isShort;
+  }
+  const [query, setQuery] = useState(queryInitial);
+  const [isChecked, setIsChecked] = useState(isCheckedInitial);
+
+  const handleMovieQueryChange = (e) => {
+    setQuery(e.target.value);
   };
 
   const handleSubmit = (e) => {
-    console.log("submitting movie");
     e.preventDefault();
-    console.log(e);
-    props.onSearchSubmit(movie.moviename);
-    // moviesApi.getMovies().then((res) => {
-    //     console.log("get movies");
-    //     console.log(res);
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   });
+    props.onSearchSubmit(query, isChecked);
   };
+
+  function handleCheckboxChange(evt) {
+    setIsChecked(evt.checked);
+  }
 
   return (
     <form className="searchform" name="searchForm" onSubmit={handleSubmit}>
@@ -39,8 +40,8 @@ function SearchForm(props) {
           name="moviename"
           minLength="2"
           maxLength="40"
-          value={movie.moviename || ""}
-          onChange={handleChange}
+          value={query}
+          onChange={handleMovieQueryChange}
           required
         ></input>
         <span className="movieName-input-error searchform__error"></span>
@@ -52,7 +53,10 @@ function SearchForm(props) {
           />
         </button>
       </fieldset>
-      <FilterCheckbox checked = {props.checked} handleFilterChange = {props.handleFilterChange}/>
+      <FilterCheckbox
+        checked={props.checked}
+        handleCheckboxChange={handleCheckboxChange}
+      />
     </form>
   );
 }

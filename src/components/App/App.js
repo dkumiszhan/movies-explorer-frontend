@@ -10,35 +10,23 @@ import Profile from "../Profile/Profile";
 import Navigation from "../Navigation/Navigation";
 import moviesApi from "../../utils/MoviesApi.js";
 import mainApi from "../../utils/MainApi";
+import ProtectedRoute from "../protectedRoute/protectedRoute.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-import moviePic from "../../images/movie-pic.png";
-
 function App() {
-  const [isShort, setIsShort] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
-  });
   const [currentUser, setCurrentUser] = useState("");
-  const [movies, setMovies] = useState([]);
   const [beatMovies, setBeatMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
   // key beatsfilms ID and value is our ID
   const [movieIdMapping, setMovieIdMapping] = useState({});
   const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
-  const [message, setMessage] = useState("");
-  const handleFilterChange = () => {
-    console.log(checked);
-    setChecked(!checked);
-    localStorage.setItem("checked", checked);
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("Ещё");
 
   function likeHandler(movieId) {
     console.log(`liking ${movieId}`);
-    const likedMovie = movies.find((movie) => movie.id === movieId);
+    const likedMovie = beatMovies.find((movie) => movie.id === movieId);
     console.log(likedMovie);
     return mainApi
       .createMovie({
@@ -64,10 +52,13 @@ function App() {
 
   function unlikeHandler(movieId) {
     console.log(`unliking ${movieId}`);
-    const unlikedMovie = movies.find((movie) => movie.id === movieId);
+    console.log(movieIdMapping);
+    const unlikedMovie = beatMovies.find((movie) => movie.id === movieId);
     console.log(unlikedMovie);
     return mainApi.deleteMovie(movieIdMapping[movieId]).then(() => {
       setMovieIdMapping({ ...movieIdMapping, [movieId]: undefined });
+      delete movieIdMapping[movieId];
+      console.log(movieIdMapping);
     });
   }
 
@@ -144,6 +135,12 @@ function App() {
 
   function fetchSavedMovies() {
     console.log("Fetching saved movies");
+    return mainApi.getMovies().then((movies) => {
+      setSavedMovies(movies);
+      return movies;
+    });
+
+    /*
     if (savedMovies.length > 0) {
       console.log("Movies are already fetched, using previous result");
       return Promise.resolve(savedMovies);
@@ -154,10 +151,11 @@ function App() {
         return movies;
       });
     }
+    */
   }
 
   function fetchMovieData() {
-    console.log('fetchMovieData is called');
+    console.log("fetchMovieData is called");
     return fetchBeatMovies().then(() =>
       fetchSavedMovies().then(() => {
         const likeMapping = savedMovies.reduce((likeMapping, savedMovie) => {
@@ -172,26 +170,36 @@ function App() {
     );
   }
 
-  function filterMovies(movies, keyword) {
+  function filterMovies(movies, keyword, checked, isLiked) {
     return movies.filter((movie) => {
-      return movie.nameRU.toLowerCase().includes(keyword.toLowerCase());
+      return (
+        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
+        (!checked || movie.duration <= 40) &&
+        (!isLiked || movieIdMapping[movie.id])
+      );
     });
   }
 
-  function onSearchSubmit(keyword) {
-    console.log("I am here");
-    fetchMovieData()
+  function onSearchSubmit(keyword, checked, isLiked) {
+    setIsLoading(true);
+    return fetchMovieData()
       .then(() => {
         console.log("i am here too");
         return fetchSavedMovies().then((savedMovies) => {
-          const filteredMovies = filterMovies(beatMovies, keyword);
-          console.log("filtered movies are " + JSON.stringify(filterMovies));
+          const filteredMovies = filterMovies(
+            beatMovies,
+            keyword,
+            checked,
+            isLiked
+          );
 
-          setMovies(filteredMovies);
-
-          if (filterMovies.length === 0) {
+          setIsLoading(false);
+          if (filteredMovies.length === 0) {
             setMessage("Ничего не найдено");
+          } else {
+            setMessage("Ещё");
           }
+          return filteredMovies;
         });
       })
       .catch(() => {
@@ -214,29 +222,41 @@ function App() {
           <Route
             path="/movies"
             element={
-              <Movies
-                movies={movies}
-                movieIdMapping={movieIdMapping}
-                likeUnlikeHandler={likeUnlikeHandler}
-                onSearchSubmit={onSearchSubmit}
-                checked={checked}
-                handleFilterChange={handleFilterChange}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Movies
+                  movieIdMapping={movieIdMapping}
+                  likeUnlikeHandler={likeUnlikeHandler}
+                  onSearchSubmit={onSearchSubmit}
+                  message={message}
+                  isLoading={isLoading}
+                  isLiked={false}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/saved-movies"
             element={
-              <SavedMovies
-                savedMovies={beatMovies.filter((movie) => !!movieIdMapping[movie.id])}
-                movieIdMapping={movieIdMapping}
-                unlikeHandler={unlikeHandler}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedMovies
+                  savedMovies={beatMovies.filter(
+                    (movie) => !!movieIdMapping[movie.id]
+                  )}
+                  movieIdMapping={movieIdMapping}
+                  unlikeHandler={unlikeHandler}
+                  onSearchSubmit={onSearchSubmit}
+                  isLiked={true}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path="/profile"
-            element={<Profile onButtonSubmit={onButtonSubmit} />}
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile onButtonSubmit={onButtonSubmit} />
+              </ProtectedRoute>
+            }
           />
           <Route path="/navigation" element={<Navigation />} />
         </Routes>

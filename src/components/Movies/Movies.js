@@ -5,35 +5,53 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
+import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function Movies(props) {
-    const [isNavOpen, setIsNavOpen] = useState(false);
 
-    const handleMenuClick = () => {
-        console.log("menu clicked");
-        setIsNavOpen(true);
-        console.log(`isNavOpen is ${isNavOpen}`);
-    }
+  const { movies } = LocalStorageUtil.loadStateFromLocalStorage(); 
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const [moviesResult, setMoviesResult] = useState(movies);
 
-    const handleCloseClick = () => {
-        console.log("close menu click");
-        setIsNavOpen(false);
-        console.log(`isNavOpen is ${isNavOpen}`);
-    }
+  const handleMenuClick = () => {
+    console.log("menu clicked");
+    setIsNavOpen(true);
+    console.log(`isNavOpen is ${isNavOpen}`);
+  };
+
+  const handleCloseClick = () => {
+    console.log("close menu click");
+    setIsNavOpen(false);
+    console.log(`isNavOpen is ${isNavOpen}`);
+  };
+
+  const searchSubmitHandler = (keyword, isChecked) => {
+    return props.onSearchSubmit(keyword, isChecked, false).then((newMovies) => {
+        setMoviesResult(newMovies);
+
+        LocalStorageUtil.saveStateToLocalStorage(newMovies, isChecked, keyword);
+        return newMovies;
+    });
+  }
 
   return (
     <>
       <Header isLoggedIn={true} handleMenuClick={handleMenuClick} />
-      {isNavOpen && <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />}
+      {isNavOpen && (
+        <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />
+      )}
       <main className="main">
-        <SearchForm onSearchSubmit={props.onSearchSubmit} checked={props.checked} handleFilterChange={props.handleFilterChange} />
+        <SearchForm
+          onSearchSubmit={searchSubmitHandler}
+          useLocalStorage={true}
+        />
         <MoviesCardList
           buttonType=""
-          cards={props.movies}
+          cards={moviesResult}
           movieIdMapping={props.movieIdMapping}
           likeUnlikeHandler={props.likeUnlikeHandler}
         />
-        <Preloader />
+        <Preloader message={props.message} isLoading={props.isLoading} />
       </main>
 
       <Footer />
