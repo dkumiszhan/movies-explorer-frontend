@@ -25,8 +25,8 @@ function SearchForm(props) {
     props.onSearchSubmit(query, isChecked);
   };
 
-  function handleCheckboxChange(evt) {
-    setIsChecked(evt.checked);
+  function handleCheckboxChange() {
+    setIsChecked(!isChecked);
   }
 
   return (
@@ -54,7 +54,7 @@ function SearchForm(props) {
         </button>
       </fieldset>
       <FilterCheckbox
-        checked={props.checked}
+        checked={isChecked}
         handleCheckboxChange={handleCheckboxChange}
       />
     </form>

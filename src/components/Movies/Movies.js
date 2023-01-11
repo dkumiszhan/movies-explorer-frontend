@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
@@ -33,6 +33,48 @@ function Movies(props) {
         return newMovies;
     });
   }
+
+  function getIsDesktop() {
+    return window.innerWidth >= 1280;
+  }
+
+  function getIsTablet() {
+    return window.innerWidth <= 1280 && window.innerWidth > 768;
+  }
+
+  function getIsMobile() {
+    return window.innerWidth <= 768 && window.innerWidth > 320;
+  }
+
+  const [initialMoviesResult, setInitialMoviesResult] = useState([]);
+
+
+  function handleResize() {
+    let itemsToDisplay = 0;
+    if (getIsDesktop) {
+      itemsToDisplay = 12;
+      setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
+      console.log(`initialMoviesResult is ${initialMoviesResult}`);
+    }
+    else if (getIsTablet) {
+      itemsToDisplay = 8;
+      setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
+      console.log(`initialMoviesResult is ${initialMoviesResult}`);
+    }
+    else if (getIsMobile) {
+      itemsToDisplay = 5;
+      setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
+      console.log(`initialMoviesResult is ${initialMoviesResult}`);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+        window.removeEventListener("resize", handleResize);
+    }
+}, []);
 
   return (
     <>
