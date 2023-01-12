@@ -8,8 +8,7 @@ import Navigation from "../Navigation/Navigation";
 import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function Movies(props) {
-
-  const { movies } = LocalStorageUtil.loadStateFromLocalStorage(); 
+  const { movies } = LocalStorageUtil.loadStateFromLocalStorage();
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [moviesResult, setMoviesResult] = useState(movies);
 
@@ -27,12 +26,12 @@ function Movies(props) {
 
   const searchSubmitHandler = (keyword, isChecked) => {
     return props.onSearchSubmit(keyword, isChecked, false).then((newMovies) => {
-        setMoviesResult(newMovies);
+      setMoviesResult(newMovies);
 
-        LocalStorageUtil.saveStateToLocalStorage(newMovies, isChecked, keyword);
-        return newMovies;
+      LocalStorageUtil.saveStateToLocalStorage(newMovies, isChecked, keyword);
+      return newMovies;
     });
-  }
+  };
 
   function getIsDesktop() {
     return window.innerWidth >= 1280;
@@ -48,20 +47,17 @@ function Movies(props) {
 
   const [initialMoviesResult, setInitialMoviesResult] = useState([]);
 
-
   function handleResize() {
     let itemsToDisplay = 0;
     if (getIsDesktop) {
       itemsToDisplay = 12;
       setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
       console.log(`initialMoviesResult is ${initialMoviesResult}`);
-    }
-    else if (getIsTablet) {
+    } else if (getIsTablet) {
       itemsToDisplay = 8;
       setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
       console.log(`initialMoviesResult is ${initialMoviesResult}`);
-    }
-    else if (getIsMobile) {
+    } else if (getIsMobile) {
       itemsToDisplay = 5;
       setInitialMoviesResult(moviesResult.slice(itemsToDisplay));
       console.log(`initialMoviesResult is ${initialMoviesResult}`);
@@ -72,9 +68,9 @@ function Movies(props) {
     window.addEventListener("resize", handleResize);
 
     return () => {
-        window.removeEventListener("resize", handleResize);
-    }
-}, []);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>

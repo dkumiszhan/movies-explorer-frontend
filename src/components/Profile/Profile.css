@@ -70,6 +70,8 @@
     font-size: 13px;
     line-height: 15.73px;
     margin: 0;
+    border: none;
+    background-color: #fff;
 }
 
 .profile__footer-text_size_redbold {

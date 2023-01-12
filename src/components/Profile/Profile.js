@@ -112,12 +112,13 @@ function Profile(props) {
         <button className="profile__button profile__footer-text" type="submit" onSubmit={handleSubmit}>
           Редактировать
         </button>
-        <Link
-          to="/"
+        <button
+          type="button"
           className="profile__footer-text profile__footer-text_size_redbold"
+          onClick={props.handleOnLogout}
         >
           Выйти из аккаунта
-        </Link>
+        </button>
       </form>
     </>
   );

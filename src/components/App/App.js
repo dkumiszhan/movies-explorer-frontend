@@ -15,9 +15,11 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function App() {
+
+  let state = LocalStorageUtil.loadStateFromLocalStorage();
+
   const [currentUser, setCurrentUser] = useState("");
-  const [beatMovies, setBeatMovies] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(state.filteredMovies);
   // key beatsfilms ID and value is our ID
   const [movieIdMapping, setMovieIdMapping] = useState({});
   const navigate = useNavigate();
@@ -25,12 +27,11 @@ function App() {
   const [message, setMessage] = useState("Ещё");
 
   useEffect(() => {
-    fetchMovieData();
   }, []);
 
   function likeHandler(movieId) {
     console.log(`liking ${movieId}`);
-    const likedMovie = beatMovies.find((movie) => movie.id === movieId);
+    const likedMovie = filteredMovies.find((movie) => movie.id === movieId);
     console.log(likedMovie);
     return mainApi
       .createMovie({
@@ -51,27 +52,34 @@ function App() {
           ...movieIdMapping,
           [movieId]: savedMovie._id,
         });
-        setSavedMovies([...savedMovies, likedMovie]);
       });
   }
 
-  function unlikeHandler(movieId) {
-    console.log(`unliking ${movieId}`);
-    console.log(movieIdMapping);
-    const unlikedMovie = beatMovies.find((movie) => movie.id === movieId);
-    console.log(unlikedMovie);
-    return mainApi.deleteMovie(movieIdMapping[movieId]).then(() => {
-      setMovieIdMapping({ ...movieIdMapping, [movieId]: undefined });
-      setSavedMovies((currentMovies) => {
-        return currentMovies.filter((movie) => movie.id !== movieId);
-      });
+  function unlikeHandlerOurs(movieId) {
+    console.log(`unliking our ID${movieId}`);
+    return mainApi.deleteMovie(movieId).then(() => {
+      let beatMoviesId = Object.keys(movieIdMapping).find(key => movieIdMapping[key] === movieId);
+      if (beatMoviesId) {
+        setMovieIdMapping({ ...movieIdMapping, [beatMoviesId]: undefined });
+      } else {
+        console.error(`${movieId} is not found while unliking`);
+      }
     });
   }
+
+  function unlikeHandlerBeatMovies(movieId) {
+    console.log(`unliking beatMovies ID ${movieId}`);
+    let ourId = movieIdMapping[movieId];
+    return mainApi.deleteMovie(ourId).then(() => {
+      setMovieIdMapping({ ...movieIdMapping, [movieId]: undefined });
+    });
+  }
+
 
   function likeUnlikeHandler(movieId) {
     console.log(`likeUnlikeHanlder ${movieId}`);
     if (movieIdMapping[movieId]) {
-      return unlikeHandler(movieId);
+      return unlikeHandlerBeatMovies(movieId);
     } else {
       return likeHandler(movieId);
     }
@@ -112,50 +120,11 @@ function App() {
     console.log(data);
   }
 
-  function fetchBeatMovies() {
-    let movies = LocalStorageUtil.getMovies();
-    if (movies.length > 0) {
-      setBeatMovies(movies);
-      return Promise.resolve(beatMovies);
-    } else {
-      return moviesApi.getMovies().then((movies) => {
-        LocalStorageUtil.setMovies(movies);
-        setBeatMovies(movies);
-        return movies;
-      });
-    }
+  function handleOnLogout() {
+    localStorage.removeItem("jwt");
+    navigate("/sign-in");
   }
 
-  function fetchSavedMovies() {
-    console.log("Fetching saved movies");
-    let movieMapping = LocalStorageUtil.getMovieToIdMapping();
-    if (movieMapping) {
-      setMovieIdMapping(movieMapping);
-      return Promise.resolve(movieMapping);
-    } else {
-      return mainApi.getMovies().then((savedMovies) => {
-        const likeMapping = savedMovies.reduce((likeMapping, savedMovie) => {
-          likeMapping[savedMovie.movieId] = savedMovie._id;
-          return likeMapping;
-        }, {});
-
-        LocalStorageUtil.setMovieToIdMapping(likeMapping);
-        setMovieIdMapping(likeMapping);
-
-        let savedMovieIds = new Set(savedMovies.map((movie) => movie.movieId));
-        setSavedMovies(
-          beatMovies.filter((movie) => savedMovieIds.has(movie.id))
-        );
-
-        return likeMapping;
-      });
-    }
-  }
-
-  function fetchMovieData() {
-    console.log("fetchMovieData is called");
-    return fetchBeatMovies().then(fetchSavedMovies);
-  }
 
   function filterMovies(movies, keyword, checked, isLiked) {
     return movies.filter((movie) => {
@@ -169,31 +138,20 @@ function App() {
 
   function onSearchSubmit(keyword, checked, isLiked) {
     setIsLoading(true);
-    return fetchMovieData()
-      .then(() => {
-        console.log("i am here too");
-        return fetchSavedMovies().then(() => {
-          const filteredMovies = filterMovies(
-            beatMovies,
-            keyword,
-            checked,
-            isLiked
-          );
-
-          setIsLoading(false);
-          if (filteredMovies.length === 0) {
-            setMessage("Ничего не найдено");
-          } else {
-            setMessage("Ещё");
-          }
-          return filteredMovies;
-        });
+    return moviesApi.getMovies().then(beatMovies => {
+      mainApi.getMovies().then(savedMovies => {
+        const likeMapping = savedMovies.reduce((likeMapping, savedMovie) => {
+          likeMapping[savedMovie.movieId] = savedMovie._id;
+          return likeMapping;
+        }, {});
+        // TODO: storage into localstorage
+        setMovieIdMapping(likeMapping);
+          
+        let filteredMovies = filterMovies(beatMovies, keyword, checked, isLiked);
+        // TODO: storage into localstorage
+        setFilteredMovies(filteredMovies);
       })
-      .catch(() => {
-        setMessage(
-          "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
-        );
-      });
+    });
   }
 
   return (
@@ -226,9 +184,8 @@ function App() {
             element={
               <ProtectedRoute>
                 <SavedMovies
-                  savedMovies={savedMovies}
                   movieIdMapping={movieIdMapping}
-                  unlikeHandler={unlikeHandler}
+                  unlikeHandler={unlikeHandlerOurs}
                   onSearchSubmit={onSearchSubmit}
                   isLiked={true}
                 />
@@ -239,7 +196,7 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute>
-                <Profile onButtonSubmit={onButtonSubmit} />
+                <Profile onButtonSubmit={onButtonSubmit} handleOnLogout={handleOnLogout}/>
               </ProtectedRoute>
             }
           />
