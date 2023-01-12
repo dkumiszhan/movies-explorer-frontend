@@ -6,15 +6,16 @@ import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function SearchForm(props) {
   let queryInitial = '';
-  let isCheckedInitial = false;
+  let checkedInitial = false;
 
   if (props.useLocalStorage) {
     const localStorageState = LocalStorageUtil.loadStateFromLocalStorage();
     queryInitial = localStorageState.query;
-    isCheckedInitial = localStorageState.isShort;
+    checkedInitial = localStorageState.checked;
   }
+
   const [query, setQuery] = useState(queryInitial);
-  const [isChecked, setIsChecked] = useState(isCheckedInitial);
+  const [isChecked, setIsChecked] = useState(checkedInitial);
 
   const handleMovieQueryChange = (e) => {
     setQuery(e.target.value);

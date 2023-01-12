@@ -1,16 +1,42 @@
 import React, { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
+import mainApi from "../../utils/MainApi";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-// import Movies from "../Movies/Movies";
 import Navigation from "../Navigation/Navigation";
 
 function SavedMovies(props) {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [savedMoviesResult, setSavedMoviesResult] = useState(props.savedMovies);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [likeMap, setLikeMap] = useState({});
 
-  console.log("savedMovies props is " + JSON.stringify(props));
+  useEffect(() => {
+    fetchSavedMovies();
+  }, []);
+
+  function fetchSavedMovies() {
+    mainApi.getMovies().then((movies) => {
+      setSavedMovies(movies);
+      setLikeMap(
+        movies.reduce((accumulator, movie) => {
+          accumulator[movie._id] = true;
+          return accumulator;
+        }, {})
+      );
+
+      setFilteredMovies(movies);
+    });
+  }
+
+  function unlikeHandler(movieId) {
+    console.log(`unliking our ID${movieId}`);
+    return mainApi.deleteMovie(movieId).then(() => {
+      setSavedMovies(savedMovies.filter((movie) => movie._id !== movieId));
+      setLikeMap({ ...likeMap, [movieId]: undefined });
+    });
+  }
 
   const handleMenuClick = () => {
     console.log("menu clicked");
@@ -24,12 +50,18 @@ function SavedMovies(props) {
     console.log(`isNavOpen is ${isNavOpen}`);
   };
 
-  const searchSubmitHandler = (keyword, isChecked) => {
-    return props.onSearchSubmit(keyword, isChecked, true).then((newMovies) => {
-        setSavedMoviesResult(newMovies);
+  const searchSubmitHandler = (keyword, checked) => {
+    setFilteredMovies(filterMovies(savedMovies, keyword, checked));
+  };
+
+  function filterMovies(movies, keyword, checked) {
+    return movies.filter((movie) => {
+      return (
+        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
+        (!checked || movie.duration <= 40)
+      );
     });
   }
-
 
   return (
     <>
@@ -39,12 +71,15 @@ function SavedMovies(props) {
         <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />
       )}
       <main className="main">
-        <SearchForm onSearchSubmit={searchSubmitHandler} checked={props.checked} />
+        <SearchForm
+          onSearchSubmit={searchSubmitHandler}
+          checked={props.checked}
+        />
         <MoviesCardList
-          cards={savedMoviesResult}
+          cards={filteredMovies}
           buttonType="card__button-delete"
-          movieIdMapping={props.movieIdMapping}
-          likeUnlikeHandler={props.unlikeHandler}
+          likeMap={likeMap}
+          likeUnlikeHandler={unlikeHandler}
         />
       </main>
 

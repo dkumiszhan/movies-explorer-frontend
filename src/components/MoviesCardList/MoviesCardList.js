@@ -3,8 +3,6 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList(props) {
-    // console.log(props, "movies card list this");
-    console.log('moviecardlist props has ' + JSON.stringify(props.cards));
     return(
         <section className="cards">
             <ul className="cards__list">
@@ -14,7 +12,7 @@ function MoviesCardList(props) {
                         key={item.id}
                         name={item.nameRU}
                         image={"https://api.nomoreparties.co" + item.image.url}
-                        isLiked={!!props.movieIdMapping[item.id]}
+                        isLiked={!!props.likeMap[item.id]}
                         buttonType={props.buttonType}
                         id={item.id}
                         url={item.trailerLink}
