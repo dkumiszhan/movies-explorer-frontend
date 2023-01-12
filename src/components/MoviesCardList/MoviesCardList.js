@@ -9,12 +9,12 @@ function MoviesCardList(props) {
                 {props.cards.map((item) => {
                     return (
                         <MoviesCard
-                        key={item.id}
+                        key={props.idGetter(item)}
                         name={item.nameRU}
-                        image={"https://api.nomoreparties.co" + item.image.url}
-                        isLiked={!!props.likeMap[item.id]}
+                        image={props.imageUrlGetter(item)}
+                        isLiked={!!props.likeMap[props.idGetter(item)]}
                         buttonType={props.buttonType}
-                        id={item.id}
+                        id={props.idGetter(item)}
                         url={item.trailerLink}
                         duration={`${Math.floor(item.duration/60)}h ${item.duration%60}м`}
                         onClickHandler={props.likeUnlikeHandler}

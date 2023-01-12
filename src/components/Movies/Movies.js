@@ -146,6 +146,16 @@ function Movies(props) {
     }
   }
 
+  function idGetter(movie) {
+    console.log('movie id is ' + JSON.stringify(movie));
+    return movie.id;
+  }
+
+
+  function imageUrlGetter(movie) {
+    return `https://api.nomoreparties.co${movie.image.url}`;
+  }
+
   useEffect(() => {
     window.addEventListener("resize", handleResize);
 
@@ -164,6 +174,8 @@ function Movies(props) {
         <SearchForm onSearchSubmit={onSearchSubmit} useLocalStorage={true} />
         <MoviesCardList
           buttonType=""
+          idGetter={idGetter}
+          imageUrlGetter={imageUrlGetter}
           cards={filteredMovies}
           likeMap={movieIdMapping}
           likeUnlikeHandler={likeUnlikeHandler}

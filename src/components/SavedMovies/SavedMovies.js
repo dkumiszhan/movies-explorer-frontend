@@ -34,6 +34,7 @@ function SavedMovies(props) {
     console.log(`unliking our ID${movieId}`);
     return mainApi.deleteMovie(movieId).then(() => {
       setSavedMovies(savedMovies.filter((movie) => movie._id !== movieId));
+      setFilteredMovies(filteredMovies.filter((movie) => movie._id !== movieId));
       setLikeMap({ ...likeMap, [movieId]: undefined });
     });
   }
@@ -63,6 +64,16 @@ function SavedMovies(props) {
     });
   }
 
+  function idGetter(movie) {
+    console.log('movie _id is ' + JSON.stringify(movie, "", 4));
+    return movie._id;
+  }
+
+
+  function imageUrlGetter(movie) {
+    return movie.image;
+  }
+
   return (
     <>
       {/* <Movies movies={filteredMovies} buttonType="card__button-delete" unlikeHandler={props.unlikeHandler} /> */}
@@ -77,6 +88,8 @@ function SavedMovies(props) {
         />
         <MoviesCardList
           cards={filteredMovies}
+          idGetter={idGetter}
+          imageUrlGetter={imageUrlGetter}
           buttonType="card__button-delete"
           likeMap={likeMap}
           likeUnlikeHandler={unlikeHandler}
