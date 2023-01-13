@@ -89,6 +89,7 @@ function SavedMovies(props) {
         <MoviesCardList
           cards={filteredMovies}
           idGetter={idGetter}
+          lastItemIndex={filteredMovies.length}
           imageUrlGetter={imageUrlGetter}
           buttonType="card__button-delete"
           likeMap={likeMap}

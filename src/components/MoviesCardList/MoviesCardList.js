@@ -6,7 +6,7 @@ function MoviesCardList(props) {
     return(
         <section className="cards">
             <ul className="cards__list">
-                {props.cards.map((item) => {
+                {props.cards.slice(0, props.lastItemIndex).map((item) => {
                     return (
                         <MoviesCard
                         key={props.idGetter(item)}

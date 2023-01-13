@@ -87,6 +87,13 @@
 .preloader__text {
     font-size: 12px;
     line-height: 14.52px;
+    border: none;
+    background: #F9F9F9;
+    cursor: pointer;
+}
+
+.preloader__text_inactive {
+    cursor: none;
 }
 
 /* .preloader__round::after,

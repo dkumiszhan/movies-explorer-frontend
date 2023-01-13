@@ -18,6 +18,22 @@ function Movies(props) {
     LocalStorageUtil.getMovieToIdMapping() || {}
   );
 
+  const [hasMore, setHasMore] = useState(false);
+
+  const [itemsPerRow, setItemsPerRow] = useState(1);
+  const [lastItemIndex, setLastItemIndex] = useState(1);
+
+  useEffect(() => {
+    console.log("inside effect");
+    resetToInitialSearchResultState(filteredMovies.length);
+    updateItemsPerRow(window.innerWidth);
+
+    window.addEventListener("resize", () =>
+      updateItemsPerRow(window.innerWidth)
+    );
+  }, []);
+  console.log("hello");
+
   function likeHandler(movieId) {
     console.log(`liking ${movieId}`);
     const likedMovie = filteredMovies.find((movie) => movie.id === movieId);
@@ -42,7 +58,10 @@ function Movies(props) {
           ...movieIdMapping,
           [movieId]: savedMovie._id,
         };
-        console.log("new movie id mapping after like is " + JSON.stringify(newMovieIdMapping));
+        console.log(
+          "new movie id mapping after like is " +
+            JSON.stringify(newMovieIdMapping)
+        );
         setMovieIdMapping(newMovieIdMapping);
         LocalStorageUtil.setMovieToIdMapping(newMovieIdMapping);
       });
@@ -67,12 +86,14 @@ function Movies(props) {
           return likeMapping;
         }, {});
 
-        console.log('movie id mapping after search is ' + JSON.stringify(likeMapping));
+        // console.log('movie id mapping after search is ' + JSON.stringify(likeMapping));
         setMovieIdMapping(likeMapping);
         LocalStorageUtil.setMovieToIdMapping(likeMapping);
 
         let filteredMovies = filterMovies(beatMovies, keyword, checked);
         setFilteredMovies(filteredMovies);
+        resetToInitialSearchResultState(filteredMovies.length);
+
         LocalStorageUtil.saveStateToLocalStorage(
           filteredMovies,
           checked,
@@ -115,54 +136,56 @@ function Movies(props) {
     console.log(`isNavOpen is ${isNavOpen}`);
   };
 
-  function getIsDesktop() {
-    return window.innerWidth >= 1280;
-  }
-
-  function getIsTablet() {
-    return window.innerWidth <= 1280 && window.innerWidth > 768;
-  }
-
-  function getIsMobile() {
-    return window.innerWidth <= 768 && window.innerWidth > 320;
-  }
-
-  const [initialMoviesResult, setInitialMoviesResult] = useState([]);
-
-  function handleResize() {
-    let itemsToDisplay = 0;
-    if (getIsDesktop) {
-      itemsToDisplay = 12;
-      setInitialMoviesResult(filteredMovies.slice(itemsToDisplay));
-      console.log(`initialMoviesResult is ${initialMoviesResult}`);
-    } else if (getIsTablet) {
-      itemsToDisplay = 8;
-      setInitialMoviesResult(filteredMovies.slice(itemsToDisplay));
-      console.log(`initialMoviesResult is ${initialMoviesResult}`);
-    } else if (getIsMobile) {
-      itemsToDisplay = 5;
-      setInitialMoviesResult(filteredMovies.slice(itemsToDisplay));
-      console.log(`initialMoviesResult is ${initialMoviesResult}`);
+  function resetToInitialSearchResultState(currentResultSize) {
+    let windowWidth = window.innerWidth;
+    let newLastItemIndex = 12;
+    if (windowWidth >= 1280) {
+      newLastItemIndex = 12;
+    } else if (windowWidth >= 768) {
+      newLastItemIndex = 8;
+    } else {
+      newLastItemIndex = 5;
     }
+    setLastItemIndex(newLastItemIndex);
+    if (newLastItemIndex < currentResultSize) {
+      setHasMore(true);
+    }
+    console.log(`Computed lastItemIndex is ${lastItemIndex} ${windowWidth}`);
+  }
+
+  function updateItemsPerRow(windowWidth) {
+    if (windowWidth >= 1280) {
+      setItemsPerRow(4);
+    } else if (windowWidth >= 768) {
+      setItemsPerRow(2);
+    } else {
+      setItemsPerRow(1);
+    }
+    console.log(`Computed setItemsPerRow is ${itemsPerRow} ${windowWidth}`);
   }
 
   function idGetter(movie) {
-    console.log('movie id is ' + JSON.stringify(movie));
     return movie.id;
   }
 
+  function handlePreloaderClick() {
+    let newLastItemIndex = lastItemIndex + itemsPerRow;
+    newLastItemIndex -= newLastItemIndex % itemsPerRow;
+    setLastItemIndex(newLastItemIndex);
+    setHasMore(newLastItemIndex < filteredMovies.length);
+  }
 
   function imageUrlGetter(movie) {
     return `https://api.nomoreparties.co${movie.image.url}`;
   }
 
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
+  //   useEffect(() => {
+  //     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //     return () => {
+  //       window.removeEventListener("resize", handleResize);
+  //     };
+  //   }, []);
 
   return (
     <>
@@ -177,10 +200,16 @@ function Movies(props) {
           idGetter={idGetter}
           imageUrlGetter={imageUrlGetter}
           cards={filteredMovies}
+          lastItemIndex={lastItemIndex}
           likeMap={movieIdMapping}
           likeUnlikeHandler={likeUnlikeHandler}
         />
-        <Preloader message={props.message} isLoading={props.isLoading} />
+        <Preloader
+          message={props.message}
+          isLoading={props.isLoading}
+          hasMore={hasMore}
+          handleClick={handlePreloaderClick}
+        />
       </main>
 
       <Footer />
