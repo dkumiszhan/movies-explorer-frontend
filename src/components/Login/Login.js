@@ -35,7 +35,6 @@ function Login(props) {
         const [isValid, setIsValid] = React.useState(false);
     
         const handleValueChange = (event) => {
-          console.log("value is changing", event.target);
           const target = event.target;
           const name = target.name;
           const value = target.value;

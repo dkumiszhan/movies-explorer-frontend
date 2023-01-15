@@ -40,15 +40,11 @@ function SavedMovies(props) {
   }
 
   const handleMenuClick = () => {
-    console.log("menu clicked");
     setIsNavOpen(true);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
 
   const handleCloseClick = () => {
-    console.log("close menu click");
     setIsNavOpen(false);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
 
   const searchSubmitHandler = (keyword, checked) => {
@@ -65,7 +61,6 @@ function SavedMovies(props) {
   }
 
   function idGetter(movie) {
-    console.log('movie _id is ' + JSON.stringify(movie, "", 4));
     return movie._id;
   }
 

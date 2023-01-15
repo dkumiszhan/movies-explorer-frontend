@@ -41,6 +41,17 @@ class MainApi {
     }).then((res) => this.checkResponse(res));
   };
 
+  updateUserInfo = ({ name, email }) => {
+    return fetch(`${this._baseUrl}/users/me`, {
+        headers: {
+            ...this._headers,
+            Authorization: this._getAuthHeader(),
+        },
+        method: "PATCH",
+        body: JSON.stringify({ name, email }),
+    }).then((res) => this.checkResponse(res));
+  };
+
   createMovie = (movie) => {
     return fetch(`${this._baseUrl}/movies`, {
         headers: {

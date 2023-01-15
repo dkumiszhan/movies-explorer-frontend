@@ -1,5 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
@@ -13,13 +13,16 @@ import ProtectedRoute from "../protectedRoute/protectedRoute.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function App() {
-
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("Ещё");
+  console.log('current user data is ' + JSON.stringify(currentUser));
 
-
+  useEffect(() => {
+    mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
+      setCurrentUser(res.data);
+    });
+  }, []);
 
   function onRegister(data) {
     return mainApi
@@ -35,15 +38,16 @@ function App() {
   }
 
   function onLogin(data) {
-    console.log(data);
     return mainApi
       .authorize(data)
       .then((jwt) => {
-        console.log("loggin in");
         navigate("/movies");
         localStorage.setItem("jwt", jwt.token);
         localStorage.setItem("ownerId", jwt._id);
-        console.log(`token is ${jwt.token}`);
+        setCurrentUser({
+          name: data.name,
+          email: data.email,
+        });
         return jwt;
       })
       .catch(() => {
@@ -53,28 +57,23 @@ function App() {
   }
 
   function onButtonSubmit(data) {
-    console.log(data);
+    console.log(`data is ${JSON.stringify(data)}`);
+    if (data.name !== currentUser.name || data.email !== currentUser.email) {
+      return mainApi.updateUserInfo(data).then((res) => {
+        console.log(`res is ${JSON.stringify(res)}`);
+        console.log(`currentUser is ${JSON.stringify(currentUser)}`);
+        setCurrentUser(res);
+        console.log(`currentUser is ${JSON.stringify(currentUser)}`);
+      });
+    } else {
+      return Promise.resolve(data);
+    }
   }
 
   function handleOnLogout() {
     localStorage.removeItem("jwt");
     navigate("/sign-in");
   }
-
-
-  /*
-  function filterMovies(movies, keyword, checked, isLiked) {
-    return movies.filter((movie) => {
-      return (
-        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
-        (!checked || movie.duration <= 40) &&
-        (!isLiked || movieIdMapping[movie.id])
-      );
-    });
-  }
-  */
-
-
 
   return (
     <>
@@ -93,7 +92,7 @@ function App() {
                 <Movies
                   setIsLoading={setIsLoading}
                   isLoading={isLoading}
-                  message={message}
+                  // message={message}
                 />
               </ProtectedRoute>
             }
@@ -105,7 +104,7 @@ function App() {
                 <SavedMovies
                   setIsLoading={setIsLoading}
                   isLoading={isLoading}
-                  message={message}
+                  // message={message}
                 />
               </ProtectedRoute>
             }
@@ -114,7 +113,12 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute>
-                <Profile onButtonSubmit={onButtonSubmit} handleOnLogout={handleOnLogout}/>
+                <Profile
+                  onButtonSubmit={onButtonSubmit}
+                  handleOnLogout={handleOnLogout}
+                  name={currentUser.name}
+                  email={currentUser.email}
+                />
               </ProtectedRoute>
             }
           />

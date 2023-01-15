@@ -22,9 +22,10 @@ function Movies(props) {
 
   const [itemsPerRow, setItemsPerRow] = useState(1);
   const [lastItemIndex, setLastItemIndex] = useState(1);
+  const [message, setMessage] = useState("Ещё");
+
 
   useEffect(() => {
-    console.log("inside effect");
     resetToInitialSearchResultState(filteredMovies.length);
     updateItemsPerRow(window.innerWidth);
 
@@ -32,12 +33,9 @@ function Movies(props) {
       updateItemsPerRow(window.innerWidth)
     );
   }, []);
-  console.log("hello");
 
   function likeHandler(movieId) {
-    console.log(`liking ${movieId}`);
     const likedMovie = filteredMovies.find((movie) => movie.id === movieId);
-    console.log(likedMovie);
     return mainApi
       .createMovie({
         ...likedMovie,
@@ -58,17 +56,12 @@ function Movies(props) {
           ...movieIdMapping,
           [movieId]: savedMovie._id,
         };
-        console.log(
-          "new movie id mapping after like is " +
-            JSON.stringify(newMovieIdMapping)
-        );
         setMovieIdMapping(newMovieIdMapping);
         LocalStorageUtil.setMovieToIdMapping(newMovieIdMapping);
       });
   }
 
   function unlikeHandler(movieId) {
-    console.log(`unliking beatMovies ID ${movieId}`);
     let ourId = movieIdMapping[movieId];
     return mainApi.deleteMovie(ourId).then(() => {
       let newMovieIdMapping = { ...movieIdMapping, [movieId]: undefined };
@@ -79,14 +72,13 @@ function Movies(props) {
 
   function onSearchSubmit(keyword, checked) {
     props.setIsLoading(true);
+    setMessage("");
     return moviesApi.getMovies().then((beatMovies) => {
       mainApi.getMovies().then((savedMovies) => {
         const likeMapping = savedMovies.reduce((likeMapping, savedMovie) => {
           likeMapping[savedMovie.movieId] = savedMovie._id;
           return likeMapping;
         }, {});
-
-        // console.log('movie id mapping after search is ' + JSON.stringify(likeMapping));
         setMovieIdMapping(likeMapping);
         LocalStorageUtil.setMovieToIdMapping(likeMapping);
 
@@ -99,15 +91,17 @@ function Movies(props) {
           checked,
           keyword
         );
-
+        setMessage("Ещё");
         props.setIsLoading(false);
+        if (filteredMovies.length === 0) {
+            setMessage("Ничего не найдено");
+        }
         return filteredMovies;
       });
     });
   }
 
   function likeUnlikeHandler(movieId) {
-    console.log(`likeUnlikeHanlder ${movieId}`);
     if (movieIdMapping[movieId]) {
       return unlikeHandler(movieId);
     } else {
@@ -125,15 +119,11 @@ function Movies(props) {
   }
 
   const handleMenuClick = () => {
-    console.log("menu clicked");
     setIsNavOpen(true);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
 
   const handleCloseClick = () => {
-    console.log("close menu click");
     setIsNavOpen(false);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
 
   function resetToInitialSearchResultState(currentResultSize) {
@@ -150,7 +140,6 @@ function Movies(props) {
     if (newLastItemIndex < currentResultSize) {
       setHasMore(true);
     }
-    console.log(`Computed lastItemIndex is ${lastItemIndex} ${windowWidth}`);
   }
 
   function updateItemsPerRow(windowWidth) {
@@ -161,7 +150,6 @@ function Movies(props) {
     } else {
       setItemsPerRow(1);
     }
-    console.log(`Computed setItemsPerRow is ${itemsPerRow} ${windowWidth}`);
   }
 
   function idGetter(movie) {
@@ -178,14 +166,6 @@ function Movies(props) {
   function imageUrlGetter(movie) {
     return `https://api.nomoreparties.co${movie.image.url}`;
   }
-
-  //   useEffect(() => {
-  //     window.addEventListener("resize", handleResize);
-
-  //     return () => {
-  //       window.removeEventListener("resize", handleResize);
-  //     };
-  //   }, []);
 
   return (
     <>
@@ -205,7 +185,7 @@ function Movies(props) {
           likeUnlikeHandler={likeUnlikeHandler}
         />
         <Preloader
-          message={props.message}
+          message={message}
           isLoading={props.isLoading}
           hasMore={hasMore}
           handleClick={handlePreloaderClick}

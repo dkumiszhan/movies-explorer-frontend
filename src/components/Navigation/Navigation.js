@@ -5,7 +5,6 @@ import accountIcon from "../../images/account-icon.svg";
 import closeButton from "../../images/close-button.svg";
 
 function Navigation(props) {
-  console.log(props.isOpen);
   return (
     <section
       className={`navigation ${props.isOpen ? "navigation_is-opened" : ""}`}

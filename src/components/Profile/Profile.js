@@ -1,73 +1,75 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./Profile.css";
 import Header from "../Header/Header";
 import validator from "validator";
 
 function Profile(props) {
-    function validateEmail(email) {
-        if (validator.isEmail(email)) {
-          return "";
-        } else {
-          return "Невалидный имейл";
-        }
-      }
-    
-      const NAME_PATTERN = /[a-zA-ZЁёА-я -]+/;
-    
-      function validateName(name) {
-        if (name.match(NAME_PATTERN)) {
-          return "";
-        } else {
-          return "Невалидное имя";
-        }
-      }
-    
-      const validators = {
-        email: validateEmail,
-        name: validateName,
-      };
-    
-      // хук управления формой и валидации формы
-      function useFormWithValidation() {
-        const [values, setValues] = React.useState({});
-        const [errors, setErrors] = React.useState({});
-        const [isValid, setIsValid] = React.useState(false);
-    
-        const handleValueChange = (event) => {
-          console.log("value is changing", event.target);
-          const target = event.target;
-          const name = target.name;
-          const value = target.value;
-          target.setCustomValidity(validators[name](value));
-    
-          setValues({ ...values, [name]: value });
-          setErrors({ ...errors, [name]: target.validationMessage });
-    
-          setIsValid(target.closest("form").checkValidity());
-        };
-        
-        // const resetForm = useCallback(
-        //   (newValues = {}, newErrors = {}, newIsValid = false) => {
-        //     setValues(newValues);
-        //     setErrors(newErrors);
-        //     setIsValid(newIsValid);
-        //   },
-        //   [setValues, setErrors, setIsValid]
-        // );
-    
-        return { values, handleValueChange, errors };
-      }
-    
-      const { values, handleValueChange, errors } =
-        useFormWithValidation();
-    
-      const handleSubmit = (e) => {
-        
-        e.preventDefault();
-        console.log("saving name and email");
-        props.onButtonSubmit(values);
-      };
+  console.log("inside profile and props are " + JSON.stringify(props));
+  const emailRef = useRef();
+  const nameRef = useRef();
+
+  useEffect(() => {
+    if (emailRef.current) {
+      emailRef.current.value = props.email;
+    }
+    if (nameRef.current) {
+      nameRef.current.value = props.name;
+    }
+  }, []);
+
+  console.log(
+    `inside profile and refs are ${emailRef.current} ${nameRef.current}`
+  );
+
+  function validateEmail(email) {
+    if (validator.isEmail(email)) {
+      return "";
+    } else {
+      return "Невалидный имейл";
+    }
+  }
+
+  const NAME_PATTERN = /[a-zA-ZЁёА-я -]+/;
+
+  function validateName(name) {
+    if (name.match(NAME_PATTERN)) {
+      return "";
+    } else {
+      return "Невалидное имя";
+    }
+  }
+
+  const validators = {
+    email: validateEmail,
+    name: validateName,
+  };
+
+  function useFormWithValidation() {
+    const [values, setValues] = React.useState({});
+    const [errors, setErrors] = React.useState({});
+    const [isValid, setIsValid] = React.useState(false);
+
+    const handleValueChange = (event) => {
+      const target = event.target;
+      const name = target.name;
+      const value = target.value;
+      target.setCustomValidity(validators[name](value));
+
+      setValues({ ...values, [name]: value });
+      setErrors({ ...errors, [name]: target.validationMessage });
+
+      setIsValid(target.closest("form").checkValidity());
+    };
+    return { values, handleValueChange, errors };
+  }
+
+  const { values, handleValueChange, errors } = useFormWithValidation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.onButtonSubmit(values);
+  };
   return (
     <>
       <Header isLoggedIn={true} />
@@ -82,10 +84,10 @@ function Profile(props) {
               id="name-input"
               type="text"
               name="name"
-              defaultValue="Кумисжан"
               minLength="2"
               maxLength="40"
               onChange={handleValueChange}
+              ref={nameRef}
               required
             />
             {/* <p className="profile__text">Кумисжан</p> */}
@@ -100,7 +102,7 @@ function Profile(props) {
               id="name-input"
               type="email"
               name="email"
-              defaultValue="pochta@yandex.ru"
+              ref={emailRef}
               minLength="2"
               maxLength="40"
               onChange={handleValueChange}
@@ -109,7 +111,11 @@ function Profile(props) {
           </div>
           <span className="profile__error">{errors.email}</span>
         </div>
-        <button className="profile__button profile__footer-text" type="submit" onSubmit={handleSubmit}>
+        <button
+          className="profile__button profile__footer-text"
+          type="submit"
+          onSubmit={handleSubmit}
+        >
           Редактировать
         </button>
         <button

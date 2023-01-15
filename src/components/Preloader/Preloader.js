@@ -5,14 +5,20 @@ const Preloader = (props) => {
   return (
     <div className="preloader">
       <div className="preloader__container">
-        {props.isLoading && <div className="preloader__round loader"></div>}
+        {props.isLoading && (
+          <div className="preloader__round">
+            <span>
+              <div className="loader"></div>
+            </span>
+          </div>
+        )}
         {props.hasMore && (
           <button
-            className="preloader__text preloader__round"
+            className="preloader__round preloader__text"
             type="button"
             onClick={props.handleClick}
           >
-            Еще
+            {props.message}
           </button>
         )}
       </div>
