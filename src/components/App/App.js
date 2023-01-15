@@ -11,6 +11,7 @@ import Navigation from "../Navigation/Navigation";
 import mainApi from "../../utils/MainApi";
 import ProtectedRoute from "../protectedRoute/protectedRoute.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -39,6 +40,7 @@ function App() {
       .authorize(data)
       .then((jwt) => {
         navigate("/movies");
+        LocalStorageUtil.clearLocalStorageSearchResults();
         localStorage.setItem("jwt", jwt.token);
         localStorage.setItem("ownerId", jwt._id);
         setCurrentUser({
@@ -64,6 +66,7 @@ function App() {
 
   function handleOnLogout() {
     localStorage.removeItem("jwt");
+    LocalStorageUtil.clearLocalStorageSearchResults();
     navigate("/sign-in");
   }
 

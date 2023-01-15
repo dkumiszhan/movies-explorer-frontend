@@ -20,7 +20,7 @@ class LocalStorageUtil {
     );
   }
 
-  static clearLocalStorage() {
+  static clearLocalStorageSearchResults() {
     localStorage.removeItem(LOCAL_STORAGE_KEY_FILTERED_MOVIES);
     localStorage.removeItem(LOCAL_STORAGE_KEY_CHECKED);
     localStorage.removeItem(LOCAL_STORAGE_KEY_QUERY);
