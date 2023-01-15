@@ -90,7 +90,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: "http://localhost:3001",
+  baseUrl: process.env.REACT_APP_BASE_URL_API || 'http://localhost:3001',
   headers: {
     "Content-type": "application/json",
   },
