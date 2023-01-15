@@ -6,6 +6,10 @@ https://drive.google.com/file/d/15nuczMidY5nZ8AeFHL1-xtvrPKdQ-qmr/view?usp=share
 
 https://github.com/dkumiszhan/movies-explorer-frontend/pull/2
 
+# Frontend is deployed at
+
+https://kumiszhan.diploma.nomoredomains.icu
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
