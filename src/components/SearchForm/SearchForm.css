@@ -23,6 +23,10 @@
     margin-left: 22px;
 }
 
+.searchform__input:focus {
+    outline: none;
+}
+
 .searchform__submit {
     border-radius: 48px;
     background-color: #2BE080;

@@ -16,23 +16,20 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  console.log('current user data is ' + JSON.stringify(currentUser));
 
   useEffect(() => {
     mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
       setCurrentUser(res.data);
-    });
+    }).catch((err) => console.log(err));
   }, []);
 
   function onRegister(data) {
     return mainApi
       .register(data)
       .then(() => {
-        console.log("registering");
         navigate("/movies");
       })
       .catch(() => {
-        console.log("error registering");
         navigate("/sign-up");
       });
   }
@@ -51,20 +48,15 @@ function App() {
         return jwt;
       })
       .catch(() => {
-        console.log("error logging in");
         navigate("/sign-up");
       });
   }
 
   function onButtonSubmit(data) {
-    console.log(`data is ${JSON.stringify(data)}`);
     if (data.name !== currentUser.name || data.email !== currentUser.email) {
       return mainApi.updateUserInfo(data).then((res) => {
-        console.log(`res is ${JSON.stringify(res)}`);
-        console.log(`currentUser is ${JSON.stringify(currentUser)}`);
         setCurrentUser(res);
-        console.log(`currentUser is ${JSON.stringify(currentUser)}`);
-      });
+      }).catch((err) => console.log(err));
     } else {
       return Promise.resolve(data);
     }

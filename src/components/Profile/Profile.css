@@ -37,6 +37,15 @@
     color: #EE3465;
 }
 
+.profile__message {
+    display: block;
+    height: 12px;
+    font-size: 10px;
+    line-height: 12px;
+    margin-bottom: 4px;
+    color: #1111fd;
+}
+
 .profile__button {
     border: none;
     background-color: #fff;
@@ -72,6 +81,7 @@
     margin: 0;
     border: none;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .profile__footer-text_size_redbold {

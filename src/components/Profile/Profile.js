@@ -1,26 +1,12 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Profile.css";
 import Header from "../Header/Header";
 import validator from "validator";
+import mainApi from "../../utils/MainApi";
 
 function Profile(props) {
-  console.log("inside profile and props are " + JSON.stringify(props));
-  const emailRef = useRef();
-  const nameRef = useRef();
-
-  useEffect(() => {
-    if (emailRef.current) {
-      emailRef.current.value = props.email;
-    }
-    if (nameRef.current) {
-      nameRef.current.value = props.name;
-    }
-  }, []);
-
-  console.log(
-    `inside profile and refs are ${emailRef.current} ${nameRef.current}`
-  );
+    const [ message, setMessage ] = useState("");
 
   function validateEmail(email) {
     if (validator.isEmail(email)) {
@@ -46,39 +32,57 @@ function Profile(props) {
   };
 
   function useFormWithValidation() {
-    const [values, setValues] = React.useState({});
-    const [errors, setErrors] = React.useState({});
-    const [isValid, setIsValid] = React.useState(false);
+    const [values, setValues] = useState({
+      name: "",
+      email: "",
+    });
+    const [errors, setErrors] = useState({});
+    const [isValid, setIsValid] = useState(false);
 
     const handleValueChange = (event) => {
+        setMessage("");
       const target = event.target;
       const name = target.name;
       const value = target.value;
       target.setCustomValidity(validators[name](value));
 
-      setValues({ ...values, [name]: value });
+      if (value) {
+        setValues({ ...values, [name]: value });
+      } else {
+        setValues({ ...values, [name]: "" });
+      }
       setErrors({ ...errors, [name]: target.validationMessage });
 
       setIsValid(target.closest("form").checkValidity());
     };
-    return { values, handleValueChange, errors };
+    return { values, setValues, handleValueChange, errors };
   }
 
-  const { values, handleValueChange, errors } = useFormWithValidation();
+  const { values, setValues, handleValueChange, errors } = useFormWithValidation();
+
+  useEffect(() => {
+    mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
+        setValues({
+            name: res.data.name,
+            email: res.data.email,
+        });
+    }).catch((err) => console.log(err));
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onButtonSubmit(values);
+    props.onButtonSubmit(values).then(() => {
+        setMessage("Данные успешно сохранены");
+    }).catch((err) => console.log(err));
   };
   return (
     <>
       <Header isLoggedIn={true} />
       <form className="profile" onSubmit={handleSubmit}>
-        <h2 className="profile__greeting">Привет, Виталий!</h2>
+        <h2 className="profile__greeting">{`Привет, ${values.name}!`}</h2>
         <div className="profile__info-content">
           <div className="profile__container profile__container_border">
             <p className="profile__text profile__text_size_bold">Имя</p>
-            {/* <input className="profile__text" value="Кумисжан" /> */}
             <input
               className="profile__text profile__input"
               id="name-input"
@@ -86,30 +90,28 @@ function Profile(props) {
               name="name"
               minLength="2"
               maxLength="40"
+              value={values.name}
               onChange={handleValueChange}
-              ref={nameRef}
               required
             />
-            {/* <p className="profile__text">Кумисжан</p> */}
           </div>
           <span className="profile__error">{errors.name}</span>
           <div className="profile__container">
             <p className="profile__text profile__text_size_bold">E-mail</p>
-            {/* <input className="profile__text" value="pochta@yandex.ru" /> */}
-            {/* <p className="profile__text">pochta@yandex.ru</p> */}
             <input
               className="profile__text profile__input"
               id="name-input"
               type="email"
               name="email"
-              ref={emailRef}
               minLength="2"
               maxLength="40"
+              value={values.email}
               onChange={handleValueChange}
               required
             />
           </div>
           <span className="profile__error">{errors.email}</span>
+          <span className="profile__message">{message}</span>
         </div>
         <button
           className="profile__button profile__footer-text"

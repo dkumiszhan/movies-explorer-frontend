@@ -20,6 +20,7 @@
     margin-top: 14px;
     height: 32px;
     margin-bottom: 29px;
+    max-width: 85%;
 }
 
 .card__button {
