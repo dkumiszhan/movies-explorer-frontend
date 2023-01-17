@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({
-    redirectPath = '/sign-in',
+    redirectPath = '/',
     children,
   }) => {
     if (!localStorage.getItem('jwt')) {

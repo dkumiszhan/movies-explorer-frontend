@@ -169,7 +169,7 @@ function Movies(props) {
 
   return (
     <>
-      <Header isLoggedIn={true} handleMenuClick={handleMenuClick} />
+      <Header isLoggedIn={props.isLoggedIn} handleMenuClick={handleMenuClick} />
       {isNavOpen && (
         <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />
       )}

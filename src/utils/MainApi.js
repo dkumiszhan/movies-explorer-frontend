@@ -20,7 +20,7 @@ class MainApi {
       body: JSON.stringify({ name, email, password }),
     }).then((res) => {
         console.log("registered a user");
-        this.checkResponse(res)
+        return this.checkResponse(res)
     });
   };
 

@@ -1,6 +1,7 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
+import NotFound from "../NotFound/NotFound";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Main from "../Main/Main";
@@ -15,20 +16,27 @@ import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt"));
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
+
+  // TODO
   useEffect(() => {
-    mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
-      setCurrentUser(res.data);
-    }).catch((err) => console.log(err));
+    if (isLoggedIn) {
+      mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
+        setCurrentUser(res.data);
+      }).catch((err) => console.log(err));
+    }
   }, []);
 
   function onRegister(data) {
     return mainApi
       .register(data)
-      .then(() => {
+      .then((jwt) => {
+        initAuthState(data, jwt);
         navigate("/movies");
+        return jwt;
       })
       .catch(() => {
         navigate("/sign-up");
@@ -39,20 +47,27 @@ function App() {
     return mainApi
       .authorize(data)
       .then((jwt) => {
+        initAuthState(data, jwt);
         navigate("/movies");
-        LocalStorageUtil.clearLocalStorageSearchResults();
-        localStorage.setItem("jwt", jwt.token);
-        localStorage.setItem("ownerId", jwt._id);
-        setCurrentUser({
-          name: data.name,
-          email: data.email,
-        });
         return jwt;
       })
       .catch(() => {
         navigate("/sign-up");
       });
   }
+
+  function initAuthState(data, jwt) {
+    LocalStorageUtil.clearLocalStorageSearchResults();
+    localStorage.setItem("jwt", jwt.token);
+    localStorage.setItem("ownerId", jwt._id);
+    setIsLoggedIn(true);
+    setCurrentUser({
+      name: data.name,
+      email: data.email,
+    });
+  }
+
+
 
   function onButtonSubmit(data) {
     if (data.name !== currentUser.name || data.email !== currentUser.email) {
@@ -67,14 +82,17 @@ function App() {
   function handleOnLogout() {
     localStorage.removeItem("jwt");
     LocalStorageUtil.clearLocalStorageSearchResults();
-    navigate("/sign-in");
+    setCurrentUser({});
+    setIsLoading(false);
+    setIsLoggedIn(false);
+    navigate("/");
   }
 
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<Main isLoggedIn={isLoggedIn}/>} />
           <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
           <Route
             path="/sign-up"
@@ -86,6 +104,7 @@ function App() {
               <ProtectedRoute>
                 <Movies
                   setIsLoading={setIsLoading}
+                  isLoggedIn={isLoggedIn}
                   isLoading={isLoading}
                   // message={message}
                 />
@@ -118,6 +137,7 @@ function App() {
             }
           />
           <Route path="/navigation" element={<Navigation />} />
+          <Route path='*' element={<NotFound />}/>
         </Routes>
       </CurrentUserContext.Provider>
     </>

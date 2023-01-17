@@ -25,6 +25,8 @@ class LocalStorageUtil {
     localStorage.removeItem(LOCAL_STORAGE_KEY_CHECKED);
     localStorage.removeItem(LOCAL_STORAGE_KEY_QUERY);
     localStorage.removeItem(LOCAL_STORAGE_KEY_FILTERED_MOVIES);
+    localStorage.removeItem(LOCAL_STORAGE_KEY_MOVIE_ID_MAPPING);
+
   }
 
   static getMovieToIdMapping() {
