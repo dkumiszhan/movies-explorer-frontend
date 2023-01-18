@@ -7,5 +7,3 @@ export const currentUser = {
 };
 
 export const CurrentUserContext = React.createContext();
-
-

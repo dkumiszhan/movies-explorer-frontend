@@ -11,6 +11,7 @@ import Profile from "../Profile/Profile";
 import Navigation from "../Navigation/Navigation";
 import mainApi from "../../utils/MainApi";
 import ProtectedRoute from "../protectedRoute/protectedRoute.js";
+import AnonymousRoute from "../anonymousRoute/anonymousRoute.js";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
@@ -101,10 +102,21 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
-          <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
+          <Route
+            path="/sign-in"
+            element={
+              <AnonymousRoute>
+                <Login onLogin={onLogin} />
+              </AnonymousRoute>
+            }
+          />
           <Route
             path="/sign-up"
-            element={<Register onRegister={onRegister} />}
+            element={
+              <AnonymousRoute>
+                <Register onRegister={onRegister} />
+              </AnonymousRoute>
+            }
           />
           <Route
             path="/movies"
@@ -114,7 +126,6 @@ function App() {
                   setIsLoading={setIsLoading}
                   isLoggedIn={isLoggedIn}
                   isLoading={isLoading}
-                  // message={message}
                 />
               </ProtectedRoute>
             }
