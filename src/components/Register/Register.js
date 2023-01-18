@@ -5,6 +5,7 @@ import logo from "../../images/logo.svg";
 import validator from "validator";
 
 function Register(props) {
+  const [authError, setAuthError] = React.useState("");
   function validateEmail(email) {
     if (validator.isEmail(email)) {
       return "";
@@ -73,7 +74,15 @@ function Register(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    props.onRegister(values).then(resetForm);
+    props
+      .onRegister(values)
+      .then(() => {
+        resetForm();
+        setAuthError("");
+      })
+      .catch((err) => {
+        setAuthError(err.message);
+      });
   };
 
   return (
@@ -139,6 +148,9 @@ function Register(props) {
             <span className="password-input-error register__error">
               {errors.password}
             </span>
+            {authError !== "" && <span className="register__error">
+              {authError}
+            </span>}
             <input
               type="submit"
               className={`register__button-save ${

@@ -20,8 +20,6 @@ function App() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-
-  // TODO
   useEffect(() => {
     if (isLoggedIn) {
       mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
@@ -38,8 +36,9 @@ function App() {
         navigate("/movies");
         return jwt;
       })
-      .catch(() => {
-        navigate("/sign-up");
+      .catch((err) => {
+        console.error('register error', err);
+        throw err;
       });
   }
 
@@ -51,8 +50,9 @@ function App() {
         navigate("/movies");
         return jwt;
       })
-      .catch(() => {
-        navigate("/sign-up");
+      .catch((err) => {
+        console.error('login error', err);
+        throw err;
       });
   }
 
