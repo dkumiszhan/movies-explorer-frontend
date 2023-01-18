@@ -22,9 +22,12 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
-        setCurrentUser(res.data);
-      }).catch((err) => console.log(err));
+      mainApi
+        .getContent(localStorage.getItem("jwt"))
+        .then((res) => {
+          setCurrentUser(res.data);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
 
@@ -37,7 +40,7 @@ function App() {
         return jwt;
       })
       .catch((err) => {
-        console.error('register error', err);
+        console.error("register error", err);
         throw err;
       });
   }
@@ -51,7 +54,7 @@ function App() {
         return jwt;
       })
       .catch((err) => {
-        console.error('login error', err);
+        console.error("login error", err);
         throw err;
       });
   }
@@ -67,15 +70,20 @@ function App() {
     });
   }
 
-
-
   function onButtonSubmit(data) {
     if (data.name !== currentUser.name || data.email !== currentUser.email) {
-      return mainApi.updateUserInfo(data).then((res) => {
-        setCurrentUser(res);
-      }).catch((err) => console.log(err));
+      return mainApi
+        .updateUserInfo(data)
+        .then((res) => {
+          setCurrentUser(res);
+          return true;
+        })
+        .catch((err) => {
+          console.log(err);
+          throw err;
+        });
     } else {
-      return Promise.resolve(data);
+      return Promise.resolve(false);
     }
   }
 
@@ -92,7 +100,7 @@ function App() {
     <>
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
-          <Route path="/" element={<Main isLoggedIn={isLoggedIn}/>} />
+          <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
           <Route path="/sign-in" element={<Login onLogin={onLogin} />} />
           <Route
             path="/sign-up"
@@ -137,7 +145,7 @@ function App() {
             }
           />
           <Route path="/navigation" element={<Navigation />} />
-          <Route path='*' element={<NotFound />}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </CurrentUserContext.Provider>
     </>

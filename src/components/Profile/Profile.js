@@ -71,8 +71,10 @@ function Profile(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onButtonSubmit(values).then(() => {
+    props.onButtonSubmit(values).then((wasUpdated) => {
+      if (wasUpdated) {
         setMessage("Данные успешно сохранены");
+      }
     }).catch((err) => console.log(err));
   };
   return (
