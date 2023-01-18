@@ -1,11 +1,12 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 const ProtectedRoute = ({
     redirectPath = '/',
     children,
   }) => {
-    if (!localStorage.getItem('jwt')) {
+    if (!LocalStorageUtil.getJwt()) {
       return <Navigate to={redirectPath} replace />;
     }
   

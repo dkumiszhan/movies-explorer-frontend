@@ -1,3 +1,5 @@
+import LocalStorageUtil from "./LocalStorageUtil";
+
 class MainApi {
   constructor(options) {
     this._baseUrl = options.baseUrl;
@@ -85,7 +87,7 @@ class MainApi {
   };
 
   _getAuthHeader() {
-    return "Bearer " + localStorage.getItem("jwt");
+    return "Bearer " + LocalStorageUtil.getJwt();
   }
 }
 

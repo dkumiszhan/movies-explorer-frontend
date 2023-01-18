@@ -8,6 +8,19 @@ import moviesApi from "../../utils/MoviesApi.js";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
 import LocalStorageUtil from "../../utils/LocalStorageUtil";
+import * as Constants from "../../utils/Constants";
+
+const WIDTH_DESKTOP = 1280;
+const WIDTH_TABLET = 768;
+
+const CARD_COUNT_DESKTOP = 12;
+const CARD_COUNT_TABLET = 8;
+const CARD_COUNT_MOBILE = 5;
+
+
+const CARDS_PER_ROW_DESKTOP = 4;
+const CARDS_PER_ROW_TABLET = 2;
+const CARDS_PER_ROW_MOBILE = 1;
 
 function Movies(props) {
   let state = LocalStorageUtil.loadStateFromLocalStorage();
@@ -39,7 +52,7 @@ function Movies(props) {
     return mainApi
       .createMovie({
         ...likedMovie,
-        owner: localStorage.getItem("ownerId"),
+        owner: LocalStorageUtil.getUserId(),
         thumbnail: `https://api.nomoreparties.co${likedMovie.image.url}`,
         movieId: likedMovie.id,
         image: `https://api.nomoreparties.co${likedMovie.image.url}`,
@@ -113,7 +126,7 @@ function Movies(props) {
     return movies.filter((movie) => {
       return (
         movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
-        (!checked || movie.duration <= 40)
+        (!checked || movie.duration <= Constants.MAX_SHORT_MOVIE_DURATION_MINUTES)
       );
     });
   }
@@ -128,13 +141,13 @@ function Movies(props) {
 
   function resetToInitialSearchResultState(currentResultSize) {
     let windowWidth = window.innerWidth;
-    let newLastItemIndex = 12;
-    if (windowWidth >= 1280) {
-      newLastItemIndex = 12;
-    } else if (windowWidth >= 768) {
-      newLastItemIndex = 8;
+    let newLastItemIndex = CARD_COUNT_DESKTOP;
+    if (windowWidth >= WIDTH_DESKTOP) {
+      newLastItemIndex = CARD_COUNT_DESKTOP;
+    } else if (windowWidth >= WIDTH_TABLET) {
+      newLastItemIndex = CARD_COUNT_TABLET;
     } else {
-      newLastItemIndex = 5;
+      newLastItemIndex = CARD_COUNT_MOBILE;
     }
     setLastItemIndex(newLastItemIndex);
     if (newLastItemIndex < currentResultSize) {
@@ -143,12 +156,12 @@ function Movies(props) {
   }
 
   function updateItemsPerRow(windowWidth) {
-    if (windowWidth >= 1280) {
-      setItemsPerRow(4);
-    } else if (windowWidth >= 768) {
-      setItemsPerRow(2);
+    if (windowWidth >= WIDTH_DESKTOP) {
+      setItemsPerRow(CARDS_PER_ROW_DESKTOP);
+    } else if (windowWidth >= WIDTH_TABLET) {
+      setItemsPerRow(CARDS_PER_ROW_TABLET);
     } else {
-      setItemsPerRow(1);
+      setItemsPerRow(CARDS_PER_ROW_MOBILE);
     }
   }
 

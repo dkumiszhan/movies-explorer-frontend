@@ -2,6 +2,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 import NotFound from "../NotFound/NotFound";
+import * as Constants from "../../utils/Constants";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Main from "../Main/Main";
@@ -17,14 +18,14 @@ import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt"));
+  const [isLoggedIn, setIsLoggedIn] = useState(LocalStorageUtil.getJwt());
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
       mainApi
-        .getContent(localStorage.getItem("jwt"))
+        .getContent(LocalStorageUtil.getJwt())
         .then((res) => {
           setCurrentUser(res.data);
         })
@@ -37,7 +38,7 @@ function App() {
       .register(data)
       .then((jwt) => {
         initAuthState(data, jwt);
-        navigate("/movies");
+        navigate(Constants.ROUTE_MOVIES);
         return jwt;
       })
       .catch((err) => {
@@ -51,7 +52,7 @@ function App() {
       .authorize(data)
       .then((jwt) => {
         initAuthState(data, jwt);
-        navigate("/movies");
+        navigate(Constants.ROUTE_MOVIES);
         return jwt;
       })
       .catch((err) => {
@@ -62,8 +63,8 @@ function App() {
 
   function initAuthState(data, jwt) {
     LocalStorageUtil.clearLocalStorageSearchResults();
-    localStorage.setItem("jwt", jwt.token);
-    localStorage.setItem("ownerId", jwt._id);
+    LocalStorageUtil.setJwt(jwt.token);
+    LocalStorageUtil.setUserId(jwt._id);
     setIsLoggedIn(true);
     setCurrentUser({
       name: data.name,
@@ -89,7 +90,7 @@ function App() {
   }
 
   function handleOnLogout() {
-    localStorage.removeItem("jwt");
+    LocalStorageUtil.removeJwt();
     LocalStorageUtil.clearLocalStorageSearchResults();
     setCurrentUser({});
     setIsLoading(false);
@@ -103,7 +104,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
           <Route
-            path="/sign-in"
+            path={Constants.ROUTE_SIGNIN}
             element={
               <AnonymousRoute>
                 <Login onLogin={onLogin} />
@@ -111,7 +112,7 @@ function App() {
             }
           />
           <Route
-            path="/sign-up"
+            path={Constants.ROUTE_SIGNUP}
             element={
               <AnonymousRoute>
                 <Register onRegister={onRegister} />
@@ -119,7 +120,7 @@ function App() {
             }
           />
           <Route
-            path="/movies"
+            path={Constants.ROUTE_MOVIES}
             element={
               <ProtectedRoute>
                 <Movies
@@ -131,19 +132,18 @@ function App() {
             }
           />
           <Route
-            path="/saved-movies"
+            path={Constants.ROUTE_SAVED_MOVIES}
             element={
               <ProtectedRoute>
                 <SavedMovies
                   setIsLoading={setIsLoading}
                   isLoading={isLoading}
-                  // message={message}
                 />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/profile"
+            path={Constants.ROUTE_PROFILE}
             element={
               <ProtectedRoute>
                 <Profile
@@ -155,7 +155,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/navigation" element={<Navigation />} />
+          <Route path={Constants.ROUTE_NAVIGATION} element={<Navigation />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </CurrentUserContext.Provider>

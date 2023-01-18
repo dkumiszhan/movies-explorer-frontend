@@ -1,3 +1,5 @@
+import LocalStorageUtil from "./LocalStorageUtil";
+
 class MoviesApi {
     constructor(options) {
         this._baseUrl = options.baseUrl;
@@ -12,7 +14,7 @@ class MoviesApi {
     }
 
     _getAuthHeader() {
-        return "Bearer " + localStorage.getItem("jwt");
+        return "Bearer " + LocalStorageUtil.getJwt();
     }
 
     getMovies() {

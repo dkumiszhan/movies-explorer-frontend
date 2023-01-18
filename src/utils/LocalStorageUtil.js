@@ -2,6 +2,8 @@ const LOCAL_STORAGE_KEY_FILTERED_MOVIES = "search-movies-filtered";
 const LOCAL_STORAGE_KEY_MOVIE_ID_MAPPING = "search-movies-id-mapping";
 const LOCAL_STORAGE_KEY_QUERY = "search-movies-query";
 const LOCAL_STORAGE_KEY_CHECKED = "search-movies-checked";
+const LOCAL_STORAGE_KEY_JWT = "jwt";
+const LOCAL_STORAGE_KEY_USER_ID = "ownerId";
 
 class LocalStorageUtil {
   static saveStateToLocalStorage(filteredMovies, checked, query) {
@@ -20,13 +22,33 @@ class LocalStorageUtil {
     );
   }
 
+  static getJwt(jwt) {
+    return localStorage.getItem(LOCAL_STORAGE_KEY_JWT);
+  }
+
+  static setJwt(jwt) {
+    localStorage.setItem(LOCAL_STORAGE_KEY_JWT, jwt);
+  }
+
+  static removeJwt(jwt) {
+    localStorage.removeItem(LOCAL_STORAGE_KEY_JWT);
+  }
+
+
+  static getUserId(userId) {
+    return localStorage.getItem(LOCAL_STORAGE_KEY_USER_ID);
+  }
+
+  static setUserId(userId) {
+    localStorage.setItem(LOCAL_STORAGE_KEY_USER_ID, userId);
+  }
+
   static clearLocalStorageSearchResults() {
     localStorage.removeItem(LOCAL_STORAGE_KEY_FILTERED_MOVIES);
     localStorage.removeItem(LOCAL_STORAGE_KEY_CHECKED);
     localStorage.removeItem(LOCAL_STORAGE_KEY_QUERY);
-    localStorage.removeItem(LOCAL_STORAGE_KEY_FILTERED_MOVIES);
     localStorage.removeItem(LOCAL_STORAGE_KEY_MOVIE_ID_MAPPING);
-
+    localStorage.removeItem(LOCAL_STORAGE_KEY_USER_ID);
   }
 
   static getMovieToIdMapping() {

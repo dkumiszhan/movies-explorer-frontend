@@ -5,6 +5,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Navigation from "../Navigation/Navigation";
+import * as Constants from "../../utils/Constants";
 
 function SavedMovies(props) {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -55,7 +56,7 @@ function SavedMovies(props) {
     return movies.filter((movie) => {
       return (
         movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
-        (!checked || movie.duration <= 40)
+        (!checked || movie.duration <= Constants.MAX_SHORT_MOVIE_DURATION_MINUTES)
       );
     });
   }

@@ -4,6 +4,7 @@ import "./Profile.css";
 import Header from "../Header/Header";
 import validator from "validator";
 import mainApi from "../../utils/MainApi";
+import LocalStorageUtil from "../../utils/LocalStorageUtil";
 
 function Profile(props) {
     const [ message, setMessage ] = useState("");
@@ -61,7 +62,7 @@ function Profile(props) {
   const { values, setValues, handleValueChange, errors } = useFormWithValidation();
 
   useEffect(() => {
-    mainApi.getContent(localStorage.getItem("jwt")).then((res) => {
+    mainApi.getContent(LocalStorageUtil.getJwt()).then((res) => {
         setValues({
             name: res.data.name,
             email: res.data.email,
