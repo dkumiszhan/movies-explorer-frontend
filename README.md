@@ -1,6 +1,6 @@
-# Backend part of diploma project
+# Frontend part of diploma project
 
-Diploma project is a service to search for movies and save them on personal account. 
+Diploma project is a service to search for movies and save them on personal account. Figma design of the project is below.
 
 # Link to Diploma figma file
 
