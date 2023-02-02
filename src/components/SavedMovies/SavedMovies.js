@@ -1,39 +1,95 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
+import mainApi from "../../utils/MainApi";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-// import Movies from "../Movies/Movies";
-import Navigation from "../Navigation/Navigation"; 
+import Navigation from "../Navigation/Navigation";
+import * as Constants from "../../utils/Constants";
 
 function SavedMovies(props) {
-  const filteredMovies = props.movies.filter((movie) => movie.isLiked);
-
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [likeMap, setLikeMap] = useState({});
+
+  useEffect(() => {
+    fetchSavedMovies();
+  }, []);
+
+  function fetchSavedMovies() {
+    mainApi.getMovies().then((movies) => {
+      setSavedMovies(movies);
+      setLikeMap(
+        movies.reduce((accumulator, movie) => {
+          accumulator[movie._id] = true;
+          return accumulator;
+        }, {})
+      );
+
+      setFilteredMovies(movies);
+    });
+  }
+
+  function unlikeHandler(movieId) {
+    console.log(`unliking our ID${movieId}`);
+    return mainApi.deleteMovie(movieId).then(() => {
+      setSavedMovies(savedMovies.filter((movie) => movie._id !== movieId));
+      setFilteredMovies(filteredMovies.filter((movie) => movie._id !== movieId));
+      setLikeMap({ ...likeMap, [movieId]: undefined });
+    });
+  }
 
   const handleMenuClick = () => {
-    console.log("menu clicked");
     setIsNavOpen(true);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
 
   const handleCloseClick = () => {
-    console.log("close menu click");
     setIsNavOpen(false);
-    console.log(`isNavOpen is ${isNavOpen}`);
   };
+
+  const searchSubmitHandler = (keyword, checked) => {
+    setFilteredMovies(filterMovies(savedMovies, keyword, checked));
+  };
+
+  function filterMovies(movies, keyword, checked) {
+    return movies.filter((movie) => {
+      return (
+        movie.nameRU.toLowerCase().includes(keyword.toLowerCase()) &&
+        (!checked || movie.duration <= Constants.MAX_SHORT_MOVIE_DURATION_MINUTES)
+      );
+    });
+  }
+
+  function idGetter(movie) {
+    return movie._id;
+  }
+
+
+  function imageUrlGetter(movie) {
+    return movie.image;
+  }
 
   return (
     <>
       {/* <Movies movies={filteredMovies} buttonType="card__button-delete" unlikeHandler={props.unlikeHandler} /> */}
       <Header isLoggedIn={true} handleMenuClick={handleMenuClick} />
-      {isNavOpen && <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />}
+      {isNavOpen && (
+        <Navigation isOpen={isNavOpen} handleCloseClick={handleCloseClick} />
+      )}
       <main className="main">
-        <SearchForm />
+        <SearchForm
+          onSearchSubmit={searchSubmitHandler}
+          checked={props.checked}
+        />
         <MoviesCardList
           cards={filteredMovies}
+          idGetter={idGetter}
+          lastItemIndex={filteredMovies.length}
+          imageUrlGetter={imageUrlGetter}
           buttonType="card__button-delete"
-          unlikeHandler={props.unlikeHandler}
+          likeMap={likeMap}
+          likeUnlikeHandler={unlikeHandler}
         />
       </main>
 

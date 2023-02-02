@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import "./Navigation.css";
 import accountIcon from "../../images/account-icon.svg";
 import closeButton from "../../images/close-button.svg";
+import * as Constants from "../../utils/Constants";
 
 function Navigation(props) {
-  console.log(props.isOpen);
   return (
     <section
       className={`navigation ${props.isOpen ? "navigation_is-opened" : ""}`}
@@ -21,14 +21,14 @@ function Navigation(props) {
         <Link to="/" className="navigation__link">
           Главная
         </Link>
-        <Link to="/movies" className="navigation__link">
+        <Link to={Constants.ROUTE_MOVIES} className="navigation__link">
           Фильмы
         </Link>
-        <Link to="/saved-movies" className="navigation__link">
+        <Link to={Constants.ROUTE_SAVED_MOVIES} className="navigation__link">
           Сохранённые фильмы
         </Link>
         <Link
-          to="/profile"
+          to={Constants.ROUTE_PROFILE}
           className="navigation__link navigation__link_account"
         >
           Аккаунт
